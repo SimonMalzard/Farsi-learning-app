@@ -8,4 +8,6 @@ I've been a bit fraustrated over the years with a lack of support for learning p
 
 This is a static html web page, with content extracted from a text book that I own. The reason for this particularly lazy structure is that I want the app to easily work on my Iphone. All of the content is extracted and the webpage built using Gemini 3 Pro. Merci Google!
 
+#
+
 Content credit and all rights reserved go to: Colloquial Persian; The Complete Course for Beginners

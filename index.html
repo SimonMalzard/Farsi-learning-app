@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Farsi App">
+    <link rel="apple-touch-icon" href="icon.png"> ```
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Colloquial Persian</title>
@@ -271,10 +275,8 @@
     // Paste the FULL JSON content inside the brackets below
     const courseData = {
         "course_title": "Colloquial Persian",
-        "units": [ 
-            {
-
-                
+        "units": [
+          {
             "unit_id": 1,
             "unit_title": "Greetings (سلام - salām)",
             "description": "Greetings, introductions, thank you, polite forms, simple questions.",
@@ -1306,9 +1308,503 @@
                 ]
               }
             ]
-          } 
+          },
+          {
+            "unit_id": 5,
+            "unit_title": "Where’s your home? (منزلتون کجاست؟ - manzeletun kojāst?)",
+            "description": "Seek and give addresses, ask about facilities, ordinal numbers, frequency, comparisons.",
+            "content_sequence": [
+              {
+                "type": "dialogue",
+                "id": "u5_d1",
+                "title": "Dialogue 1: Giving your details",
+                "context": "Mrs Rezaee (R) is phoning for an ambulance for her husband, who has just fallen down the stairs.",
+                "lines": [
+                  { "speaker": "T", "farsi": "اسم بیمار چیه؟", "transliteration": "esm-e bimār chie?", "english": "What’s the name of the patient?" },
+                  { "speaker": "R", "farsi": "حسن احمدی.", "transliteration": "hasan-e ahmadi.", "english": "Hassan Ahmadi." },
+                  { "speaker": "T", "farsi": "آدرستون چیه؟", "transliteration": "ādresetun chie?", "english": "What’s your address?" },
+                  { "speaker": "R", "farsi": "تهران، خیابان مهر، پلاک ۸، طبقه ششم، آپارتمان ۱۲.", "transliteration": "tehrān, khiābān-e mehr, pelāk-e hasht, tabaqe-ye sheshom, āpārtemān-e davāzdah.", "english": "Tehran, Mehr Street, No. 8, 6th floor, Flat 12." },
+                  { "speaker": "T", "farsi": "کجای خیابان مهر هستید؟ سینما حافظ میدونید کجاست؟", "transliteration": "kojā-ye khiābun-e mehr hastid? sinemā hāfez midunid kojāst?", "english": "Where in Mehr Street are you? Do you know where Hafez cinema is?" },
+                  { "speaker": "R", "farsi": "بله. درست روبروی سینما هستیم، پهلوی سوپرمارکت.", "transliteration": "bale. dorost ru-be-ru-ye sinemā hastim, pahlu-ye supermārket.", "english": "Yes. We’re just opposite the cinema, next to the supermarket." },
+                  { "speaker": "T", "farsi": "آسانسور دارید؟", "transliteration": "āsānsor dārid?", "english": "Do you have a lift?" },
+                  { "speaker": "R", "farsi": "داریم، اما خرابه متأسفانه.", "transliteration": "dārim, ammā xarābe mota(’)assefāne.", "english": "We do, but it’s broken, I’m afraid." },
+                  { "speaker": "T", "farsi": "ای وای! خب عیب نداره. شماره تلفنتون چنده؟", "transliteration": "ei vāi! xob, eib nadāre. shomāre telefonetun chande?", "english": "Oh dear! OK, never mind. What’s your phone number?" },
+                  { "speaker": "R", "farsi": "۳۵ - ۱۷ - ۴۲", "transliteration": "si o panj, hefdah, chel o do.", "english": "35–17–42." }
+                ]
+              },
+              {
+                "type": "vocabulary",
+                "title": "Vocabulary: Dialogue 1",
+                "items": [
+                  { "farsi": "اسم", "transliteration": "esm", "english": "name" },
+                  { "farsi": "بیمار", "transliteration": "bimār", "english": "patient" },
+                  { "farsi": "آدرس", "transliteration": "ādres", "english": "address" },
+                  { "farsi": "خیابان", "transliteration": "khiābān", "english": "street" },
+                  { "farsi": "پلاک", "transliteration": "pelāk", "english": "number (house)" },
+                  { "farsi": "طبقه", "transliteration": "tabaqe", "english": "floor/storey" },
+                  { "farsi": "ششم", "transliteration": "sheshom", "english": "sixth" },
+                  { "farsi": "کجا", "transliteration": "kojā", "english": "where" },
+                  { "farsi": "دانستن", "transliteration": "dānestan (dun)", "english": "to know" },
+                  { "farsi": "درست", "transliteration": "dorost", "english": "just/exact" },
+                  { "farsi": "روبرو", "transliteration": "ru-be-ru", "english": "opposite" },
+                  { "farsi": "پهلو", "transliteration": "pahlu", "english": "side/next to" },
+                  { "farsi": "آسانسور", "transliteration": "āsānsor", "english": "lift/elevator" },
+                  { "farsi": "خراب", "transliteration": "kharāb", "english": "broken/out of order" },
+                  { "farsi": "متأسفانه", "transliteration": "mota-assefāne", "english": "unfortunately" },
+                  { "farsi": "ای وای", "transliteration": "ei vāi", "english": "Oh dear!" },
+                  { "farsi": "عیب", "transliteration": "eib", "english": "fault/defect" },
+                  { "farsi": "عیب نداره", "transliteration": "eib nadāre", "english": "Never mind (lit: it has no defect)" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Language Note: Prepositions",
+                "content": "Here are some common prepositions. In casual speech, the -ye is often dropped.",
+                "grammar_points": [
+                  { "rule": "On", "examples": [{ "farsi": "روی", "transliteration": "ru-ye", "english": "on" }] },
+                  { "rule": "Under", "examples": [{ "farsi": "زیر", "transliteration": "zir-e", "english": "under" }] },
+                  { "rule": "In/Inside", "examples": [{ "farsi": "توی", "transliteration": "tu-ye", "english": "inside" }] },
+                  { "rule": "Next to", "examples": [{ "farsi": "پهلوی", "transliteration": "pahlu-ye", "english": "next to" }] },
+                  { "rule": "Opposite", "examples": [{ "farsi": "روبروی", "transliteration": "ru-be-ru-ye", "english": "opposite" }] },
+                  { "rule": "Behind", "examples": [{ "farsi": "پشت", "transliteration": "posht-e", "english": "behind" }] },
+                  { "rule": "In front of", "examples": [{ "farsi": "جلوی", "transliteration": "jelo-ye", "english": "in front of" }] },
+                  { "rule": "Above/Over", "examples": [{ "farsi": "بالای", "transliteration": "bālā-ye", "english": "above" }] },
+                  { "rule": "Near", "examples": [{ "farsi": "نزدیک", "transliteration": "nazdik-e", "english": "near" }] }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "fill_in_blank",
+                "title": "Exercise 1",
+                "input_mode": "farsi",
+                "instruction": "Fill in the blanks with the appropriate preposition in Persian.",
+                "questions": [
+                  { "prompt": "Your sandwich is on the table. (sāndevicetun ... mize)", "correct_answer": "روی" },
+                  { "prompt": "The pencil is under the table. (medād ... mize)", "correct_answer": "زیر" },
+                  { "prompt": "The toilet is inside the supermarket. (tuālet ... supermārkete)", "correct_answer": "توی" },
+                  { "prompt": "The petrol station is next to the car park. (pomp-e benzin ... pārkinge)", "correct_answer": "پهلوی" },
+                  { "prompt": "My flat is opposite the cinema. (āpārtemānam ... sinemāst)", "correct_answer": "روبروی" },
+                  { "prompt": "The public telephone is in front of our house. (telefon-e hamegāni ... manzel-e māst)", "correct_answer": "جلوی" },
+                  { "prompt": "Ahmad's house is behind the cinema. (xune-ye ahmad ... sinemāst)", "correct_answer": "پشت" },
+                  { "prompt": "Ali's flat is above ours. (āpārtemān-e ali ... māl-e māst)", "correct_answer": "بالای" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Grammar: Ordinal Numbers",
+                "content": "For the first three, we use specific words. For others, add the suffix '-om'.",
+                "grammar_points": [
+                  { "rule": "1st", "examples": [{ "transliteration": "avval", "english": "first" }] },
+                  { "rule": "2nd", "examples": [{ "transliteration": "dovvom", "english": "second" }] },
+                  { "rule": "3rd", "examples": [{ "transliteration": "sevvom", "english": "third" }] },
+                  { "rule": "Suffix -om", "examples": [{ "transliteration": "chahārom", "english": "fourth" }, { "transliteration": "panjom", "english": "fifth" }, { "transliteration": "shanzdahom", "english": "sixteenth" }] }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "title": "Exercise 2",
+                "input_mode": "farsi",
+                "instruction": "Give the Persian equivalents (in Persian script).",
+                "questions": [
+                  { "prompt": "first", "correct_answer": "اول" },
+                  { "prompt": "second", "correct_answer": "دوم" },
+                  { "prompt": "third", "correct_answer": "سوم" },
+                  { "prompt": "ninth", "correct_answer": "نهم" },
+                  { "prompt": "thirty-first", "correct_answer": "سی و یکم" },
+                  { "prompt": "seventieth", "correct_answer": "هفتادم" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Language Note: Postal Address",
+                "content": "Addresses start with the largest unit (Country) and end with the smallest (Name).",
+                "grammar_points": [
+                  { "rule": "Order", "content": "Country -> City -> Postcode -> Street -> Alley -> Number -> Name" },
+                  { "rule": "Example", "examples": [{ "transliteration": "irān, tehrān, kod-e posti 218603, khiābān-e ābān, pelāk-e 9", "english": "Iran, Tehran, Postcode 218603, Aban St, No 9" }] }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "title": "Exercise 3",
+                "input_mode": "farsi",
+                "instruction": "Write this address in Persian order/script: No. 10 Downing Street, London SW1, England.",
+                "questions": [
+                  { "prompt": "Address", "correct_answer": "انگلستان، لندن، کد پستی اس دابلیو یک، خیابان داونینگ، پلاک ۱۰" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Grammar: Present Simple 'To Know'",
+                "content": "Verb: dānestan/dunestan (stem: dun). Formula: mi + stem + ending.",
+                "grammar_points": [
+                  { "rule": "Affirmative", "examples": [
+                    { "transliteration": "midunam", "english": "I know" },
+                    { "transliteration": "miduni", "english": "You know" },
+                    { "transliteration": "midune", "english": "He/she knows" },
+                    { "transliteration": "midunim", "english": "We know" },
+                    { "transliteration": "midunid", "english": "You know (pl)" },
+                    { "transliteration": "midunand", "english": "They know" }
+                  ]},
+                  { "rule": "Negative", "content": "Add 'ne-' prefix.", "examples": [{ "transliteration": "nemidunam", "english": "I don't know" }] }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "fill_in_blank",
+                "title": "Exercise 4",
+                "input_mode": "farsi",
+                "instruction": "Fill in the blanks with the correct verb form in Persian.",
+                "questions": [
+                  { "prompt": "Saturday to Wednesday, I go to university. (shanbe tā chahār-shanbe, be dāneshgāh ...)", "correct_answer": "میرم" },
+                  { "prompt": "On Fridays, we eat dinner in a restaurant. (jom'ehā, dar resturān shām ...)", "correct_answer": "میخوریم" },
+                  { "prompt": "On Mondays, Ali plays the piano. (do-shanbehā, ali piāno ...)", "correct_answer": "میزنه" },
+                  { "prompt": "On Tuesdays, we read books. (se-shanbehā, ketāb ...)", "correct_answer": "میخونیم" },
+                  { "prompt": "What do you (inf) do on Sundays? (yek-shanbehā che-kār ...)", "correct_answer": "میکنی" },
+                  { "prompt": "I check my emails in the evening. (shabhā imeilhām-o ...)", "correct_answer": "چک میکنم" }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "title": "Exercise 6",
+                "input_mode": "farsi",
+                "instruction": "Can you say these in Persian?",
+                "questions": [
+                  { "prompt": "What's Ahmad's address?", "correct_answer": "آدرس احمد چیه؟" },
+                  { "prompt": "Do you have a lighter? Yes, but it's broken.", "correct_answer": "فندک دارید؟ بله، اما خرابه" },
+                  { "prompt": "Which floor is your flat on?", "correct_answer": "آپارتمانتون طبقه چندمه؟" },
+                  { "prompt": "Fourth floor.", "correct_answer": "طبقه چهارم" },
+                  { "prompt": "Where's my sandwich?", "correct_answer": "ساندویچ من کجاست؟" },
+                  { "prompt": "It's on the table, in the kitchen.", "correct_answer": "روی میزه، توی آشپزخانه" },
+                  { "prompt": "He doesn't know where we are.", "correct_answer": "او نمیدونه ما کجا هستیم" },
+                  { "prompt": "Do you know who she is?", "correct_answer": "میدونید او کیه؟" },
+                  { "prompt": "What do you do on Saturdays?", "correct_answer": "شنبه ها چه کار میکنید؟" }
+                ]
+              },
+              {
+                "type": "dialogue",
+                "id": "u5_d2",
+                "title": "Dialogue 2: Asking about family",
+                "context": "An Iranian (I) and a British tourist (T) on a flight to Tehran.",
+                "lines": [
+                  { "speaker": "I", "farsi": "شما هر سال تابستون می آید ایران؟", "transliteration": "shomā har sāl tābestun miāid irān?", "english": "Do you come to Iran every summer?" },
+                  { "speaker": "T", "farsi": "راستش، سالی دو سه بار می آم.", "transliteration": "rāstesh, sāli do se bār miām.", "english": "Actually, I come two or three times a year." },
+                  { "speaker": "I", "farsi": "کارتون چیه؟", "transliteration": "kāretun chie?", "english": "What's your job?" },
+                  { "speaker": "T", "farsi": "اپراتور کامپیوتر هستم.", "transliteration": "operātor-e kāmpiuter hastam.", "english": "I'm a computer operator." },
+                  { "speaker": "I", "farsi": "کجا کار می کنید؟", "transliteration": "kojā kār mikonid?", "english": "Where do you work?" },
+                  { "speaker": "T", "farsi": "تو یک شرکت آمریکایی کار می کنم.", "transliteration": "tu yek sherkat-e āmrikāyi kār mikonam.", "english": "I work in an American company." },
+                  { "speaker": "I", "farsi": "شما چه کار می کنید؟", "transliteration": "shomā che-kār mikonid?", "english": "What do you do?" },
+                  { "speaker": "T", "farsi": "معلم هستم.", "transliteration": "mo'allem hastam.", "english": "I'm a teacher." },
+                  { "speaker": "I", "farsi": "چی درس میدید؟", "transliteration": "chi dars midid?", "english": "What do you teach?" },
+                  { "speaker": "T", "farsi": "ریاضی درس میدم.", "transliteration": "riāzi dars midam.", "english": "I teach maths." },
+                  { "speaker": "I", "farsi": "این آقا پسرتان اند؟", "transliteration": "in āghā pesaretunand?", "english": "Is this gentleman your son?" },
+                  { "speaker": "T", "farsi": "نه، برادرمه. از شما خیلی کوچکتره!", "transliteration": "na, barādarame. az shomā kheili kuchektare!", "english": "No, he's my brother. He's much younger than you!" },
+                  { "speaker": "I", "farsi": "بله، کوچکترین عضو خانواده است.", "transliteration": "bale, kuchektarin ozv-e khānevāde ast.", "english": "Yes, he's the youngest member of the family." }
+                ]
+              },
+              {
+                "type": "vocabulary",
+                "title": "Vocabulary: Dialogue 2",
+                "items": [
+                  { "farsi": "هر", "transliteration": "har", "english": "every" },
+                  { "farsi": "سال", "transliteration": "sāl", "english": "year" },
+                  { "farsi": "تابستون", "transliteration": "tābestun", "english": "summer" },
+                  { "farsi": "آمدن", "transliteration": "āmadan (ā)", "english": "to come" },
+                  { "farsi": "راستش", "transliteration": "rāstesh", "english": "actually/to be honest" },
+                  { "farsi": "سالی", "transliteration": "sāli", "english": "per year" },
+                  { "farsi": "بار", "transliteration": "bār", "english": "time/occasion" },
+                  { "farsi": "شرکت", "transliteration": "sherkat", "english": "company" },
+                  { "farsi": "درس دادن", "transliteration": "dars dādan", "english": "to teach" },
+                  { "farsi": "ریاضی", "transliteration": "riāzi", "english": "mathematics" },
+                  { "farsi": "پسر", "transliteration": "pesar", "english": "boy/son" },
+                  { "farsi": "برادر", "transliteration": "barādar", "english": "brother" },
+                  { "farsi": "کوچکتر", "transliteration": "kuchektar", "english": "smaller/younger" },
+                  { "farsi": "عضو", "transliteration": "ozv", "english": "member" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Grammar: Verb 'To Come'",
+                "content": "The verb is 'umadan' (stem: ā). Since the stem is a vowel, we add a soft 'y' buffer in literary Persian, but in colloquial, we reduce.",
+                "grammar_points": [
+                  { "rule": "Conjugation", "examples": [
+                    { "transliteration": "miām", "english": "I come" },
+                    { "transliteration": "miāi", "english": "You come" },
+                    { "transliteration": "miād", "english": "He/she comes" },
+                    { "transliteration": "miāim", "english": "We come" },
+                    { "transliteration": "miāid", "english": "You come (pl)" },
+                    { "transliteration": "miānd", "english": "They come" }
+                  ]}
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Adverbs of Frequency",
+                "grammar_points": [
+                  { "rule": "Every...", "examples": [
+                      { "transliteration": "har ruz", "english": "every day" },
+                      { "transliteration": "har hafte", "english": "every week" }
+                  ]},
+                  { "rule": "Once a...", "content": "Use suffix '-i' for 'a/per'.", "examples": [
+                      { "transliteration": "sāli yek bār", "english": "once a year" },
+                      { "transliteration": "ruzi do bār", "english": "twice a day" }
+                  ]}
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "title": "Exercise 7",
+                "input_mode": "farsi",
+                "instruction": "Translate using 'umadan' (to come).",
+                "questions": [
+                  { "prompt": "We come to the Farsi class once a week.", "correct_answer": "ما هفته ای یک بار به کلاس فارسی می آییم" },
+                  { "prompt": "They come to England every year.", "correct_answer": "آنها هر سال به انگلستان می آیند" },
+                  { "prompt": "I come here every week.", "correct_answer": "من هر هفته به اینجا می آیم" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Comparatives & Superlatives",
+                "content": "Comparative: adj + tar. Superlative: adj + tarin.",
+                "grammar_points": [
+                  { "rule": "Comparative", "examples": [{ "transliteration": "kuchektar", "english": "smaller/younger" }, { "transliteration": "geruntar", "english": "more expensive" }] },
+                  { "rule": "Superlative", "examples": [{ "transliteration": "kuchektarin", "english": "smallest/youngest" }, { "transliteration": "behtarin", "english": "best" }] }
+                ],
+                "notes": "Irregular: xub (good) -> behtar (better) -> behtarin (best)."
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "fill_in_blank",
+                "title": "Exercise 8: Comparative",
+                "input_mode": "farsi",
+                "instruction": "Fill in the blank with the comparative form.",
+                "questions": [
+                  { "prompt": "Iran is larger than England (irān az engelestān ... e)", "correct_answer": "بزرگتر" },
+                  { "prompt": "Esfahan is more beautiful than Tehran (esfahān az tehrān ... e)", "correct_answer": "زیباتر" },
+                  { "prompt": "My mother's cooking is better than my friend's (dast-pokht-e mādaram ... e)", "correct_answer": "بهتر" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Language Note: Extended Family",
+                "content": "Persian is specific about aunts and uncles.",
+                "grammar_points": [
+                  { "rule": "Uncles", "examples": [{ "transliteration": "ammu", "english": "paternal uncle" }, { "transliteration": "dā'i", "english": "maternal uncle" }] },
+                  { "rule": "Aunts", "examples": [{ "transliteration": "amme", "english": "paternal aunt" }, { "transliteration": "khāle", "english": "maternal aunt" }] },
+                  { "rule": "Cousins", "content": "Add 'pesar' (son) or 'dokhtar' (daughter) to the uncle/aunt name. E.g., pesar-ammu (paternal uncle's son)." }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 10",
+                "instruction": "Can you say these in Persian?",
+                "questions": [
+                  { "prompt": "Do you have a younger sister?", "correct_answer": "خواهر کوچکتر دارید؟" },
+                  { "prompt": "I'm three years older than my brother.", "correct_answer": "من سه سال از برادرم بزرگترم" },
+                  { "prompt": "Are you the eldest member of the family?", "correct_answer": "شما بزرگترین عضو خانواده هستید؟" },
+                  { "prompt": "My father is two years older than my aunt (paternal).", "correct_answer": "پدرم دو سال از عمه ام بزرگتره" },
+                  { "prompt": "Where is the nearest Iranian restaurant?", "correct_answer": "نزدیکترین رستوران ایرانی کجاست؟" },
+                  { "prompt": "This is the largest supermarket in this town.", "correct_answer": "این بزرگترین سوپرمارکت این شهره" },
+                  { "prompt": "I don't watch television.", "correct_answer": "من تلویزیون تماشا نمیکنم" }
+                ]
+              },
+              {
+                "type": "comprehension",
+                "title": "Comprehension: Email Friend",
+                "context": "An Iranian friend writes about her home in Shiraz.",
+                "questions": [
+                  { "question": "In which part of Shiraz does she live?", "options": ["North", "West", "South"], "correct_index": 1 },
+                  { "question": "What is opposite their alleyway?", "options": ["A petrol station", "A cinema", "A park"], "correct_index": 0 },
+                  { "question": "Who has the largest room?", "options": ["She does", "Her sister", "Her parents"], "correct_index": 0 },
+                  { "question": "Who is the best singer in Iran (in her opinion)?", "options": ["Googoosh", "Shajarian", "Ebi"], "correct_index": 1 }
+                ]
+              }
+            ]
+          },
+          {
+            "unit_id": 6,
+            "unit_title": "Arriving in Tehran (ورود به تهران - vorud be tehrān)",
+            "description": "Immigration, customs, future plans, suggestions, polite offers.",
+            "content_sequence": [
+              {
+                "type": "dialogue",
+                "id": "u6_d1",
+                "title": "Dialogue 1: How long will you stay?",
+                "context": "An Australian tourist (T) at Tehran airport passport control (O).",
+                "lines": [
+                  { "speaker": "O", "farsi": "گذرنامه، لطفاً.", "transliteration": "gozarnāme, lotfan.", "english": "(Your) passport, please." },
+                  { "speaker": "T", "farsi": "بفرمایید.", "transliteration": "befarmāyid.", "english": "Here you are." },
+                  { "speaker": "O", "farsi": "متشکرم. چند وقت تو ایران می مونید؟", "transliteration": "mot(a)shakkeram. chand vaght tu irān mimunid?", "english": "Thank you. How long will you stay in Iran?" },
+                  { "speaker": "T", "farsi": "حدود سه ماه.", "transliteration": "hodud-e se māh.", "english": "About three months." },
+                  { "speaker": "O", "farsi": "هدفتون از این سفر چیه؟", "transliteration": "hadafetun az in safar chie?", "english": "What is the purpose of this visit?" },
+                  { "speaker": "T", "farsi": "والا، من زبان شناس هستم.", "transliteration": "vāllā, man zabān-shenās hastam.", "english": "Well, I am a linguist." },
+                  { "speaker": "T", "farsi": "دارم روی لهجه شیرین اصفهانی کار می کنم.", "transliteration": "dāram ru-ye lahje-ye shirin-e esfahāni kār mikonam.", "english": "I'm working on the sweet Esfahani accent." },
+                  { "speaker": "O", "farsi": "آدرس مشخصی دارید تو ایران؟", "transliteration": "ādres-e moshakh-khasi dārid tu irān?", "english": "Do you have a specific address in Iran?" },
+                  { "speaker": "T", "farsi": "نه، میرم هتل.", "transliteration": "na, miram hotel.", "english": "No, I'll go to a hotel." },
+                  { "speaker": "O", "farsi": "به ایران خوش آمدید.", "transliteration": "be irān khosh āmadid.", "english": "Welcome to Iran." }
+                ]
+              },
+              {
+                "type": "vocabulary",
+                "title": "Vocabulary: Dialogue 1",
+                "items": [
+                  { "farsi": "گذرنامه", "transliteration": "gozarnāme", "english": "passport" },
+                  { "farsi": "لطفاً", "transliteration": "lotfan", "english": "please" },
+                  { "farsi": "ماندن", "transliteration": "māndan (mun)", "english": "to stay" },
+                  { "farsi": "حدود", "transliteration": "hodud-e", "english": "about/approximately" },
+                  { "farsi": "ماه", "transliteration": "māh", "english": "month/moon" },
+                  { "farsi": "هدف", "transliteration": "hadaf", "english": "aim/purpose" },
+                  { "farsi": "سفر", "transliteration": "safar", "english": "journey/visit" },
+                  { "farsi": "والا", "transliteration": "vāllā", "english": "well/to be honest" },
+                  { "farsi": "زبان شناس", "transliteration": "zabān-shenās", "english": "linguist" },
+                  { "farsi": "لهجه", "transliteration": "lahje", "english": "accent/dialect" },
+                  { "farsi": "شیرین", "transliteration": "shirin", "english": "sweet" },
+                  { "farsi": "مشخص", "transliteration": "moshakh-khas", "english": "specific" },
+                  { "farsi": "خوش آمدید", "transliteration": "khosh āmadid", "english": "welcome" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Grammar: Future & Present Continuous",
+                "content": "In colloquial Persian, the Present Simple often covers the Future. To express 'Continuous' (I am doing), use 'dāram' + present simple.",
+                "grammar_points": [
+                  { "rule": "Future (Colloquial)", "examples": [{ "transliteration": "miram hotel", "english": "I will go to a hotel (lit: I go)" }] },
+                  { "rule": "Future (Formal)", "content": "xāham + short infinitive (xāham raft). Rare in speech." },
+                  { "rule": "Present Continuous", "content": "Use 'dāŝtan' (to have) as an auxiliary.", "examples": [{ "transliteration": "dāram kār mikonam", "english": "I am working (right now)" }, { "transliteration": "dāri miri?", "english": "Are you going?" }] }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "title": "Exercise 1",
+                "input_mode": "farsi",
+                "instruction": "Translate into Persian (Colloquial).",
+                "questions": [
+                  { "prompt": "Where will you stay?", "correct_answer": "کجا میمونید" },
+                  { "prompt": "I'll stay here for a month.", "correct_answer": "یک ماه اینجا میمونم" },
+                  { "prompt": "What are you doing right now?", "correct_answer": "دارید چه کار میکنید" },
+                  { "prompt": "I am buying a ticket.", "correct_answer": "دارم بلیت میخرم" },
+                  { "prompt": "I am looking for a hotel.", "correct_answer": "دارم دنبال هتل میگردم" }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "title": "Exercise 2",
+                "input_mode": "farsi",
+                "instruction": "Answer these questions about Dialogue 1 in Persian.",
+                "questions": [
+                  { "prompt": "What is the tourist's job?", "correct_answer": "زبان شناس است" },
+                  { "prompt": "Where will he stay?", "correct_answer": "هتل" },
+                  { "prompt": "How long will he stay?", "correct_answer": "سه ماه" }
+                ]
+              },
+              {
+                "type": "dialogue",
+                "id": "u6_d2",
+                "title": "Dialogue 2: Going through customs",
+                "context": "Customs officer (O) and passenger (P).",
+                "lines": [
+                  { "speaker": "O", "farsi": "چمدونتونو بذارید رو میز، لطفاً.", "transliteration": "chamedunetun-o bezārid ru miz, lotfan.", "english": "Put your suitcase on the table, please." },
+                  { "speaker": "P", "farsi": "این ساک دستی رو هم بذارم؟", "transliteration": "in sāk-dasti-ro ham bezāram?", "english": "Shall I put down this holdall as well?" },
+                  { "speaker": "O", "farsi": "چی دارید؟", "transliteration": "chi dārid?", "english": "What have you got?" },
+                  { "speaker": "P", "farsi": "چیز خاصی نداریم. بیشتر لباس و وسایل شخصیه.", "transliteration": "chiz-e khāssi nadārim. bishtar lebās o vasāyel-e shakhsie.", "english": "We haven't got anything special. Mostly clothes and personal items." },
+                  { "speaker": "P", "farsi": "کمی هم سوغات.", "transliteration": "kami ham soughāt.", "english": "Also a few souvenirs." },
+                  { "speaker": "O", "farsi": "برای من؟", "transliteration": "barāye man?", "english": "For me?" },
+                  { "speaker": "P", "farsi": "قابلی نداره!", "transliteration": "ghābeli nadāre!", "english": "Be my guest! (It's not worthy of you)" },
+                  { "speaker": "O", "farsi": "خواهش می کنم... خوش بگذره.", "transliteration": "khāhesh mikonam... khosh begzare.", "english": "No thanks... Have a nice time." }
+                ]
+              },
+              {
+                "type": "vocabulary",
+                "title": "Vocabulary: Dialogue 2",
+                "items": [
+                  { "farsi": "چمدان", "transliteration": "chamedun", "english": "suitcase" },
+                  { "farsi": "گذاشتن", "transliteration": "gozāshran (zār)", "english": "to put" },
+                  { "farsi": "میز", "transliteration": "miz", "english": "table/desk" },
+                  { "farsi": "ساک دستی", "transliteration": "sāk-dasti", "english": "holdall/hand luggage" },
+                  { "farsi": "بیشتر", "transliteration": "bishtar", "english": "mostly/more" },
+                  { "farsi": "لباس", "transliteration": "lebās", "english": "clothes/dress" },
+                  { "farsi": "وسایل", "transliteration": "vasāyel", "english": "items/means" },
+                  { "farsi": "شخصی", "transliteration": "shakhsi", "english": "personal" },
+                  { "farsi": "سوغات", "transliteration": "soughāt", "english": "souvenir" },
+                  { "farsi": "قابل", "transliteration": "ghābel", "english": "worthy" },
+                  { "farsi": "خوش گذشتن", "transliteration": "khosh gozashtan", "english": "to have a good time" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Grammar: Imperative (Command)",
+                "content": "Prefix 'be-' + stem. Formal adds '-id'.",
+                "grammar_points": [
+                  { "rule": "Informal", "examples": [{ "transliteration": "bezār", "english": "Put!" }] },
+                  { "rule": "Formal", "examples": [{ "transliteration": "bezārid", "english": "Put!" }] },
+                  { "rule": "Negative", "content": "Use 'na-' instead of 'be-'.", "examples": [{ "transliteration": "nazār", "english": "Don't put!" }] },
+                  { "rule": "Subjunctive", "content": "The imperative structure is also used for 'Shall I...?' questions. E.g. Bezāram? (Shall I put?)" }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "title": "Exercise 6",
+                "input_mode": "farsi",
+                "instruction": "Give the formal imperative.",
+                "questions": [
+                  { "prompt": "Sit here (neshastan)", "correct_answer": "اینجا بنشینید" },
+                  { "prompt": "Open the door (bāz kardan)", "correct_answer": "در را باز کنید" },
+                  { "prompt": "Wait (sabr kardan)", "correct_answer": "صبر کنید" },
+                  { "prompt": "Come here (āmadan)", "correct_answer": "اینجا بیایید" },
+                  { "prompt": "Don't go (raftan)", "correct_answer": "نروید" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Language Note: Polite Phrases",
+                "grammar_points": [
+                  { "rule": "Go ahead", "content": "'Befarmāyid' (Please go ahead / Here you are).", "examples": [] },
+                  { "rule": "Have fun", "content": "'Khosh begzare' (Have a nice time).", "examples": [] },
+                  { "rule": "Ta'arof", "content": "'Ghābeli nadāre' (It's not worthy of you - used when offering a gift/payment).", "examples": [] },
+                  { "rule": "Sequencing", "content": "Politeness dictates putting yourself last: 'Peter and I' -> 'Peter o man'." }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 11",
+                "instruction": "Can you say these in Persian?",
+                "questions": [
+                  { "prompt": "Where shall I put your sandwich?", "correct_answer": "ساندویچتون رو کجا بذارم؟" },
+                  { "prompt": "Bring it here please.", "correct_answer": "لطفا بیاریدش اینجا" },
+                  { "prompt": "Will you bring me some souvenirs?", "correct_answer": "برای من سوغات میارید؟" },
+                  { "prompt": "Have a nice weekend.", "correct_answer": "آخر هفته خوش بگذره" },
+                  { "prompt": "Shall we go to the supermarket?", "correct_answer": "بریم سوپرمارکت؟" }
+                ]
+              },
+              {
+                "type": "comprehension",
+                "title": "Comprehension: Taxi Conversation",
+                "context": "James (J) talks to a taxi driver (D).",
+                "questions": [
+                  { "question": "Where does James want to go?", "options": ["Ferdowsi Hotel", "Laleh Hotel", "Airport"], "correct_index": 0 },
+                  { "question": "Where is James from?", "options": ["England", "Australia", "USA"], "correct_index": 1 },
+                  { "question": "How long will he stay?", "options": ["One week", "Two weeks", "One month"], "correct_index": 1 },
+                  { "question": "Where does he want to stop?", "options": ["At the hotel", "In front of the supermarket", "At the bank"], "correct_index": 1 },
+                  { "question": "How much was the fare?", "options": ["1000 Tomans", "2000 Tomans", "500 Tomans"], "correct_index": 0 }
+                ]
+              }
+            ]
+          }
         ]
-    };
+      };
+
+
+
 
     // ==========================================
     // APP LOGIC

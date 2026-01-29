@@ -2,1501 +2,1660 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Farsi Learning App - Offline</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Colloquial Persian</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary: #007AFF;
+            --bg: #f2f2f7;
+            --card: #ffffff;
+            --text: #1c1c1e;
+            --subtext: #8e8e93;
+            --border: #e5e5ea;
+            --success: #34c759;
+            --error: #ff3b30;
+            --note-bg: #fff8d6;
+            --note-border: #f7ce46;
         }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-            direction: ltr;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-
-        .progress-bar {
-            background: rgba(255,255,255,0.3);
-            height: 8px;
-            border-radius: 4px;
-            margin-top: 15px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            background: white;
-            height: 100%;
-            transition: width 0.3s ease;
-        }
-
-        .content {
-            padding: 30px;
-        }
-
-        .tab-buttons {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
         }
 
-        .tab-btn {
-            flex: 1;
-            min-width: 120px;
-            padding: 12px 20px;
-            border: 2px solid #667eea;
-            background: white;
-            color: #667eea;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .tab-btn:hover {
-            background: #f0f4ff;
-        }
-
-        .tab-btn.active {
-            background: #667eea;
-            color: white;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .lesson-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .lesson-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .lesson-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .lesson-card.completed {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        }
-
-        .lesson-card.current {
-            border: 3px solid #ffd700;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-        }
-
-        .lesson-number {
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-
-        .lesson-status {
-            font-size: 0.8em;
-            margin-top: 5px;
-            opacity: 0.9;
-        }
-
-        .textbook-view {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            border: 2px solid #e9ecef;
-            max-height: 500px;
-            overflow-y: auto;
-            line-height: 1.8;
-        }
-
-        .farsi-text {
-            direction: rtl;
-            font-size: 1.4em;
-            line-height: 2;
-            font-family: 'Tahoma', 'Arial', sans-serif;
-        }
-
-        .vocab-table {
+        #app-container {
             width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-
-        .vocab-table th {
-            background: #667eea;
-            color: white;
-            padding: 12px;
-            text-align: left;
-        }
-
-        .vocab-table td {
-            padding: 12px;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .vocab-table tr:hover {
-            background: #f8f9fa;
-        }
-
-        .section {
-            margin: 25px 0;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-        }
-
-        .section-title {
-            font-size: 1.3em;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 15px;
-        }
-
-        .practice-card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 15px 0;
-            border-left: 4px solid #667eea;
-        }
-
-        .btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 10px;
-            background: #667eea;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 5px;
-        }
-
-        .btn:hover {
-            background: #5568d3;
-            transform: translateY(-2px);
-        }
-
-        .btn-success {
-            background: #38ef7d;
-        }
-
-        .btn-success:hover {
-            background: #2dd36f;
-        }
-
-        .info-box {
-            background: #e7f3ff;
-            border-left: 4px solid #2196F3;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-        }
-
-        .flashcard {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            text-align: center;
-            min-height: 200px;
+            max-width: 480px; /* Mobile width cap */
+            background-color: var(--bg);
+            height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* --- HEADER --- */
+        header {
+            background-color: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 0 15px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            font-size: 17px;
+            font-weight: 600;
+            margin: 0;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 60%;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 16px;
             cursor: pointer;
-            transition: transform 0.3s ease;
-            border: 2px solid #e9ecef;
-            margin: 20px 0;
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+        .nav-btn.hidden { visibility: hidden; }
+        .nav-icon { margin-right: 4px; font-size: 20px; line-height: 1; }
+
+        /* --- SCROLL AREA --- */
+        #contentArea {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 40px;
         }
 
-        .flashcard:hover {
-            transform: scale(1.02);
-        }
-
-        .flashcard.flipped {
-            background: #f8f9fa;
-        }
-
-        .flashcard-front {
-            font-size: 2em;
-        }
-
-        .flashcard-back {
-            display: none;
-        }
-
-        .flashcard.flipped .flashcard-front {
-            display: none;
-        }
-
-        .flashcard.flipped .flashcard-back {
-            display: block;
-        }
-
-        .quiz-option {
-            padding: 15px;
-            margin: 10px 0;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
+        /* --- UNIT LIST --- */
+        .unit-card {
+            background: var(--card);
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background 0.2s;
+        }
+        .unit-card:active { background: #e5e5ea; }
+        .unit-meta { font-size: 11px; font-weight: 700; color: var(--primary); text-transform: uppercase; margin-bottom: 4px; }
+        .unit-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+        .unit-desc { font-size: 14px; color: var(--subtext); line-height: 1.4; }
+
+        /* --- LESSON SECTIONS --- */
+        .section-header {
+            padding: 24px 16px 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--subtext);
+            text-transform: uppercase;
         }
 
-        .quiz-option:hover {
-            border-color: #667eea;
-            background: #f0f4ff;
+        .card {
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 0;
         }
 
-        .quiz-option.correct {
-            border-color: #38ef7d;
-            background: #d4f4dd;
+        /* Context Block */
+        .context-box {
+            padding: 12px 16px;
+            font-style: italic;
+            color: #666;
+            font-size: 13px;
+            border-bottom: 1px solid var(--border);
+            background-color: #fcfcfc;
         }
 
-        .quiz-option.incorrect {
-            border-color: #ff6b6b;
-            background: #ffe0e0;
+        /* Dialogue */
+        .dialogue-row {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
         }
+        .dialogue-row:last-child { border-bottom: none; }
+        .speaker { font-size: 12px; font-weight: 700; color: var(--primary); margin-bottom: 2px; }
+        .farsi { font-size: 19px; font-family: Tahoma, sans-serif; direction: rtl; margin: 4px 0; line-height: 1.4; color: #000; }
+        .translit { font-size: 15px; font-weight: 500; color: #333; margin-bottom: 2px; }
+        .eng { font-size: 13px; color: var(--subtext); }
 
-        input[type="text"], textarea {
-            width: 100%;
+        /* Vocabulary */
+        .vocab-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .vocab-row:last-child { border-bottom: none; }
+        .vocab-left { flex: 1; margin-right: 15px; }
+        .vocab-word { font-weight: 600; font-size: 15px; margin-bottom: 2px; }
+        .vocab-def { font-size: 13px; color: #666; }
+        .vocab-farsi { font-size: 18px; font-family: Tahoma, sans-serif; direction: rtl; white-space: nowrap; }
+
+        /* Teaching / Grammar */
+        .teaching-block { padding: 16px; }
+        .teaching-text { font-size: 15px; line-height: 1.5; margin-bottom: 12px; color: #333; }
+        
+        .grammar-point { margin-top: 20px; }
+        .grammar-point:first-child { margin-top: 0; }
+        .gp-title { font-weight: 700; color: var(--text); margin-bottom: 8px; display: block; }
+        
+        .example-box {
+            background-color: #f9f9f9;
+            border-left: 3px solid var(--primary);
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 0 6px 6px 0;
+        }
+        .example-meta { font-size: 13px; color: #555; margin-top: 4px; }
+        
+        .note-box {
+            margin-top: 15px;
+            background-color: var(--note-bg);
+            border: 1px solid var(--note-border);
             padding: 12px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            font-size: 1em;
-            margin: 10px 0;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #5c4d00;
         }
 
-        textarea {
-            min-height: 100px;
-            font-family: inherit;
-        }
+        /* Grammar Tables */
+        table.g-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+        table.g-table td, table.g-table th { border: 1px solid var(--border); padding: 8px; text-align: left; }
+        table.g-table .farsi { font-size: 16px; direction: rtl; font-family: Tahoma; }
 
-        .answer-feedback {
-            padding: 15px;
-            border-radius: 10px;
-            margin: 10px 0;
+        /* Exercises */
+        .exercise-container { padding: 16px; }
+        .ex-instruction { font-size: 14px; font-style: italic; color: var(--subtext); margin-bottom: 15px; }
+        
+        .question-item { margin-bottom: 25px; }
+        .q-prompt { font-weight: 500; font-size: 16px; margin-bottom: 8px; display: block; }
+        .q-prompt.rtl { direction: rtl; font-family: Tahoma; font-size: 18px; text-align: right; }
+        
+        .input-wrapper { display: flex; gap: 8px; }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #c7c7cc;
+            border-radius: 8px;
+            font-size: 16px;
+            -webkit-appearance: none;
         }
+        input[type="text"].farsi-input {
+            direction: rtl;
+            font-family: Tahoma;
+            text-align: right;
+        }
+        
+        button {
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 0 16px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-check { background-color: var(--primary); color: white; }
+        .btn-check:active { opacity: 0.7; }
+        .btn-show { background: transparent; color: var(--primary); padding: 0; margin-left: auto; font-size: 13px; }
 
-        .answer-feedback.correct {
-            background: #d4f4dd;
-            border: 2px solid #38ef7d;
-        }
+        .feedback { margin-top: 8px; font-size: 14px; font-weight: 600; display: flex; align-items: center; min-height: 20px; }
+        .feedback.correct { color: var(--success); }
+        .feedback.wrong { color: var(--error); }
+        .feedback.info { color: var(--subtext); font-weight: 400; direction: ltr; }
+        .feedback.info.rtl { direction: rtl; text-align: right; font-family: Tahoma; font-size: 16px; color: #000; }
 
-        .answer-feedback.incorrect {
-            background: #ffe0e0;
-            border: 2px solid #ff6b6b;
+        /* Matching */
+        .matching-row { display: flex; align-items: center; margin-bottom: 10px; justify-content: space-between; border-bottom: 1px solid #f9f9f9; padding-bottom: 8px;}
+        .match-select { padding: 8px; border-radius: 6px; border: 1px solid #ccc; background: white; font-size: 14px; width: 45%; }
+
+        /* Radio Options */
+        .radio-label {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            background: white;
         }
+        .radio-label.selected { border-color: var(--primary); background-color: #f0f7ff; }
+        .radio-label input { margin-right: 12px; }
+
+        /* Helpers */
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>📚 Farsi Learning App</h1>
-            <p>Colloquial Persian - Offline Edition</p>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <p id="progressText" style="margin-top: 10px; font-size: 0.9em;">0 of 15 lessons completed</p>
-        </div>
 
-        <div class="content">
-            <div class="tab-buttons">
-                <button class="tab-btn active" onclick="showTab('lessons')">📖 Lessons</button>
-                <button class="tab-btn" onclick="showTab('read')">📄 Read</button>
-                <button class="tab-btn" onclick="showTab('practice')">✍️ Practice</button>
-                <button class="tab-btn" onclick="showTab('flashcards')">🎴 Flashcards</button>
-                <button class="tab-btn" onclick="showTab('quiz')">❓ Quiz</button>
-            </div>
+<div id="app-container">
+    <header>
+        <button class="nav-btn hidden" id="backBtn" onclick="renderHome()">
+            <span class="nav-icon">&#10094;</span> Back
+        </button>
+        <h1 id="pageTitle">Colloquial Persian</h1>
+        <div style="width: 60px;"></div> </header>
 
-            <!-- Lessons Tab -->
-            <div id="lessons" class="tab-content active">
-                <div class="section-title">Select a Lesson</div>
-                <div class="info-box">
-                    ✅ Works completely offline! Tap any lesson to start. Green = completed, Gold border = current lesson.
-                </div>
-                <div class="lesson-grid" id="lessonGrid"></div>
-            </div>
+    <div id="contentArea"></div>
+</div>
 
-            <!-- Read Tab -->
-            <div id="read" class="tab-content">
-                <div class="section-title">Lesson <span id="readLessonNum">1</span>: <span id="lessonTitle"></span></div>
-                <div class="textbook-view" id="textbookContent">
-                    <p>Select a lesson to view its content</p>
-                </div>
-                <button class="btn btn-success" onclick="markLessonComplete()" style="margin-top: 20px;">✓ Mark Complete</button>
-            </div>
+<script>
+    // ==========================================
+    // DATA SECTION
+    // ==========================================
+    
+    // Paste the FULL JSON content inside the brackets below
+    const courseData = {
+        "course_title": "Colloquial Persian",
+        "units": [ 
+            {
 
-            <!-- Practice Tab -->
-            <div id="practice" class="tab-content">
-                <div class="section-title">Practice Lesson <span id="practiceLessonNum">1</span></div>
-                <div id="practiceArea">
-                    <p>Select a lesson to start practicing</p>
-                </div>
-            </div>
+                
+            "unit_id": 1,
+            "unit_title": "Greetings (سلام - salām)",
+            "description": "Greetings, introductions, thank you, polite forms, simple questions.",
+            "content_sequence": [
+              {
+                "type": "dialogue",
+                "id": "u1_d1",
+                "title": "Dialogue 1: Greeting and leave-taking",
+                "context": "It’s 8 a.m. at the office. Members of staff greet each other briefly.",
+                "lines": [
+                  { "speaker": "A", "farsi": "سلام. صبح به خیر.", "transliteration": "salām. sob(h) be-xeir.", "english": "Hello. Good morning." },
+                  { "speaker": "B", "farsi": "سلام. صبح به خیر.", "transliteration": "salām. sob(h) be-xeir.", "english": "Hello. Good morning." },
+                  { "speaker": "A", "farsi": "خدا حافظ. شب به خیر.", "transliteration": "xodā (h)āfez. ŝab be-xeir.", "english": "Goodbye. Goodnight." },
+                  { "speaker": "B", "farsi": "خدا حافظ. شب به خیر.", "transliteration": "xodā (h)āfez. ŝab be-xeir.", "english": "Goodbye. Goodnight." }
+                ]
+              },
+              {
+                "type": "vocabulary",
+                "title": "Vocabulary: Dialogue 1",
+                "items": [
+                  { "farsi": "سلام", "transliteration": "salām", "english": "hello" },
+                  { "farsi": "صبح", "transliteration": "sobh", "english": "morning" },
+                  { "farsi": "روز", "transliteration": "ruz", "english": "day" },
+                  { "farsi": "به خیر", "transliteration": "be-xeir", "english": "may it be good" },
+                  { "farsi": "ظهر", "transliteration": "zohr", "english": "noon" },
+                  { "farsi": "خدا", "transliteration": "xodā", "english": "God" },
+                  { "farsi": "عصر", "transliteration": "asr", "english": "(late) afternoon" },
+                  { "farsi": "حافظ", "transliteration": "hāfez", "english": "protector" },
+                  { "farsi": "سفر", "transliteration": "safar", "english": "journey" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Language Note: How to say 'Good Morning'",
+                "introduction": "The formula is: Time of day + be-xeir (may it be good).",
+                "grammar_points": [
+                  { "rule": "Morning", "examples": [{ "farsi": "صبح به خیر", "transliteration": "sobh be-xeir", "english": "Good morning" }] },
+                  { "rule": "Day", "examples": [{ "farsi": "روز به خیر", "transliteration": "ruz be-xeir", "english": "Good day" }] },
+                  { "rule": "Noon", "examples": [{ "farsi": "ظهر به خیر", "transliteration": "zohr be-xeir", "english": "Good mid-day/noon" }] },
+                  { "rule": "Afternoon", "examples": [{ "farsi": "عصر به خیر", "transliteration": "asr be-xeir", "english": "Good (late) afternoon" }] },
+                  { "rule": "Night", "examples": [{ "farsi": "شب به خیر", "transliteration": "ŝab be-xeir", "english": "Goodnight" }] },
+                  { "rule": "Journey", "examples": [{ "farsi": "سفر به خیر", "transliteration": "safar be-xeir", "english": "Have a good journey" }] }
+                ],
+                "notes": "Note: Younger people are expected to say 'salām' first."
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "matching",
+                "title": "Exercise 1",
+                "instruction": "Match the Farsi word with the English translation.",
+                "pairs": [
+                  { "id": 1, "prompt": "صبح (sobh)", "match": "morning" },
+                  { "id": 2, "prompt": "سلام (salām)", "match": "hello" },
+                  { "id": 3, "prompt": "شب (ŝab)", "match": "night" },
+                  { "id": 4, "prompt": "خدا حافظ (xodā hāfez)", "match": "goodbye" },
+                  { "id": 5, "prompt": "صبح به خیر (sobh be-xeir)", "match": "good morning" },
+                  { "id": 6, "prompt": "شب به خیر (ŝab be-xeir)", "match": "goodnight" }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 2",
+                "instruction": "Can you say these in Persian? (Write in Farsi)",
+                "questions": [
+                  { "id": 1, "prompt": "Good day", "correct_answer": "روز به خیر" },
+                  { "id": 2, "prompt": "Good afternoon", "correct_answer": "عصر به خیر" },
+                  { "id": 3, "prompt": "(Have a) good journey", "correct_answer": "سفر به خیر" },
+                  { "id": 4, "prompt": "Good mid-day/noon", "correct_answer": "ظهر به خیر" }
+                ]
+              },
+              {
+                "type": "dialogue",
+                "id": "u1_d2",
+                "title": "Dialogue 2: Introducing yourself",
+                "context": "Mr Reza Hooshangi (H) has just been called by the information desk officer (O) at the airport in Tehran.",
+                "lines": [
+                  { "speaker": "H", "farsi": "سلام خانم.", "transliteration": "salām xānom.", "english": "Hello madam." },
+                  { "speaker": "O", "farsi": "سلام آقا. بفرمایید.", "transliteration": "salām āqā. befarmāyid.", "english": "Hello sir. Please go ahead." },
+                  { "speaker": "H", "farsi": "ببخشید، من هوشنگی هستم. رضا هوشنگی.", "transliteration": "bebaxŝid, man huŝangi hastam. rezā huŝangi.", "english": "Excuse me. I am Hooshangi." },
+                  { "speaker": "O", "farsi": "آها بله، این تلفن برای شماست.", "transliteration": "āhā bale, in telefon barāye ŝomāst.", "english": "Ah yes, this telephone is for you." },
+                  { "speaker": "H", "farsi": "مرسی خانم. الو؟", "transliteration": "mersi xānom. alou?", "english": "Thanks madam. Hello?" }
+                ]
+              },
+              {
+                "type": "vocabulary",
+                "title": "Vocabulary: Dialogue 2",
+                "items": [
+                  { "farsi": "خانم", "transliteration": "xānom", "english": "madam / lady" },
+                  { "farsi": "آقا", "transliteration": "āqā", "english": "sir / gentleman" },
+                  { "farsi": "بفرمایید", "transliteration": "befarmāyid", "english": "please go ahead" },
+                  { "farsi": "ببخشید", "transliteration": "bebaxŝid", "english": "sorry / excuse me" },
+                  { "farsi": "من", "transliteration": "man", "english": "I" },
+                  { "farsi": "هستم", "transliteration": "hastam", "english": "(I) am" },
+                  { "farsi": "بله", "transliteration": "bale", "english": "yes" },
+                  { "farsi": "این", "transliteration": "in", "english": "this" },
+                  { "farsi": "تلفن", "transliteration": "telefon", "english": "telephone" },
+                  { "farsi": "برای", "transliteration": "barāye", "english": "for" },
+                  { "farsi": "شما", "transliteration": "ŝomā", "english": "you (formal)" },
+                  { "farsi": "مرسی", "transliteration": "mersi", "english": "thanks" },
+                  { "farsi": "الو", "transliteration": "alou", "english": "hello" },
+                  { "farsi": "بودن", "transliteration": "budan", "english": "to be" },
+                  { "farsi": "خوب", "transliteration": "xub", "english": "fine / good" },
+                  { "farsi": "هست", "transliteration": "hast", "english": "is (emphatic)" },
+                  { "farsi": "دکتر", "transliteration": "doktor", "english": "doctor" },
+                  { "farsi": "اما", "transliteration": "ammā", "english": "but" },
+                  { "farsi": "ایشون", "transliteration": "iŝun", "english": "s/he (polite)" },
+                  { "farsi": "خوش حال", "transliteration": "xoŝ-hāl", "english": "happy" },
+                  { "farsi": "پیغام", "transliteration": "peiqām", "english": "message" },
+                  { "farsi": "هدیه", "transliteration": "hedye", "english": "present / gift" },
+                  { "farsi": "بسته", "transliteration": "baste", "english": "parcel" },
+                  { "farsi": "بلیت", "transliteration": "belit", "english": "ticket" },
+                  { "farsi": "هم", "transliteration": "ham", "english": "too / also" },
+                  { "farsi": "خیلی", "transliteration": "xeili", "english": "very" },
+                  { "farsi": "ممنون", "transliteration": "mamnun", "english": "obliged / grateful" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Grammar: Personal Pronouns & 'To Be'",
+                "introduction": "These are the building blocks of Persian sentences.",
+                "grammar_points": [
+                  {
+                    "rule": "Personal Pronouns",
+                    "table": [
+                      { "farsi": "من", "translit": "man", "eng": "I" },
+                      { "farsi": "تو", "translit": "to", "eng": "you (informal)" },
+                      { "farsi": "او", "translit": "u", "eng": "he/she" },
+                      { "farsi": "آن", "translit": "ān", "eng": "it/that" },
+                      { "farsi": "این", "translit": "in", "eng": "this" },
+                      { "farsi": "ما", "translit": "mā", "eng": "we" },
+                      { "farsi": "شما", "translit": "ŝomā", "eng": "you (formal)" },
+                      { "farsi": "آنها", "translit": "ānhā", "eng": "they" }
+                    ]
+                  },
+                  {
+                    "rule": "The Verb 'To Be'",
+                    "examples": [
+                      { "farsi": "من خوب هستم", "transliteration": "man xub hastam", "english": "I am fine" },
+                      { "farsi": "تو خوب هستی", "transliteration": "to xub hasti", "english": "You are fine" },
+                      { "farsi": "آنها خوب هستند", "transliteration": "ānhā xub hastand", "english": "They are fine" }
+                    ]
+                  }
+                ],
+                "notes": "The verb normally comes at the end of the sentence. The word 'ast' is the normal equivalent for English 'is'. When 'is' carries stress (emphasis), the Persian equivalent is 'hast'. In colloquial Persian, 'ān' is often pronounced 'un', and 'ānhā' as 'unhā'."
+              },
+              {
+                "type": "teaching",
+                "title": "Language Note: Polite Forms & Questions",
+                "grammar_points": [
+                  { 
+                      "rule": "Polite Forms", 
+                      "content": "For 'you', 'shomā' is formal. For 'he/she', 'u' is neutral, but 'ishun' is polite and takes a plural verb.",
+                      "examples": [
+                          { "farsi": "ایشون خانم جانسون هستند", "transliteration": "iŝun xānom-e jānson hastand", "english": "She is Ms Johnson" }
+                      ] 
+                  },
+                  { 
+                      "rule": "Questions", 
+                      "content": "To ask a yes/no question, simply raise your intonation. The word order does not change.",
+                      "examples": [
+                          { "type": "Statement", "farsi": "شما دکتر هستید.", "transliteration": "ŝomā doktor hastid.", "english": "You are a doctor." },
+                          { "type": "Question", "farsi": "شما دکتر هستید؟", "transliteration": "ŝomā doktor hastid?", "english": "Are you a doctor?" }
+                      ] 
+                  }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "substitution",
+                "title": "Exercise 3",
+                "input_mode": "farsi",
+                "instruction": "Replace the word 'khub' (fine) with 'khosh-hāl' (happy) to produce the Persian equivalents. Write in Persian.",
+                "questions": [
+                  { "prompt": "I am happy", "correct_answer": "من خوش حال هستم" },
+                  { "prompt": "You (inf) are happy", "correct_answer": "تو خوش حال هستی" },
+                  { "prompt": "He/She is happy", "correct_answer": "او خوش حال است" },
+                  { "prompt": "It/That is happy", "correct_answer": "آن خوش حال است" },
+                  { "prompt": "We are happy", "correct_answer": "ما خوش حال هستیم" },
+                  { "prompt": "You (formal) are happy", "correct_answer": "شما خوش حال هستید" },
+                  { "prompt": "They are happy", "correct_answer": "آنها خوش حال هستند" }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 4",
+                "instruction": "Translate into Persian.",
+                "questions": [
+                  { "id": 1, "prompt": "Hello sir. I am Peter Brown.", "correct_answer": "سلام آقا. من پیتر براون هستم" },
+                  { "id": 2, "prompt": "Oh yes, this message is for you.", "correct_answer": "آها بله، این پیغام برای شماست" },
+                  { "id": 3, "prompt": "This present is for you.", "correct_answer": "این هدیه برای شماست" },
+                  { "id": 4, "prompt": "This present is for Mr Ahmadi.", "correct_answer": "این هدیه برای آقای احمدی است" },
+                  { "id": 5, "prompt": "This parcel is for Ms Ahmadi.", "correct_answer": "این بسته برای خانم احمدی است" },
+                  { "id": 6, "prompt": "This is Ms Ahmadi (introducing).", "correct_answer": "ایشون خانم احمدی هستند" },
+                  { "id": 7, "prompt": "This is Mr Kamran (introducing).", "correct_answer": "ایشون آقای کامران هستند" },
+                  { "id": 8, "prompt": "Are you Ms Johnson?", "correct_answer": "شما خانم جانسون هستید؟" }
+                ]
+              },
+              {
+                "type": "comprehension",
+                "title": "Comprehension",
+                "context": "A has just called into a travel agency.",
+                "dialogue": [
+                    { "speaker": "A", "farsi": "سلام آقا.", "transliteration": "salām āqā.", "english": "Hello sir." },
+                    { "speaker": "B", "farsi": "سلام خانم. عصر به خیر.", "transliteration": "salām xānom. asr be-xeir.", "english": "Hello madam. Good afternoon." },
+                    { "speaker": "A", "farsi": "عصر به خیر. ببخشید، شما آقای کامران هستید؟", "transliteration": "asr be-xeir. bebaxŝid, ŝomā āqāye kāmrān hastid?", "english": "Good afternoon. Excuse me, are you Mr Kamran?" },
+                    { "speaker": "B", "farsi": "بله، بفرمایید.", "transliteration": "bale, befarmāyid.", "english": "Yes, please go ahead." },
+                    { "speaker": "A", "farsi": "من احمدی هستم.", "transliteration": "man ahmadi hastam.", "english": "I am Ahmadi." },
+                    { "speaker": "B", "farsi": "آها بله، خانم احمدی. این بلیت برای شماست. این پیغام هم برای شماست.", "transliteration": "āhā bale, xānom-e ahmadi. in belit barāye ŝomāst. in peiqām ham barāye ŝomāst.", "english": "Ah yes, Ms Ahmadi. This ticket is for you. This message is also for you." },
+                    { "speaker": "A", "farsi": "خیلی ممنون. خدا حافظ.", "transliteration": "xeili mamnun. xodā hāfez.", "english": "Many thanks. Goodbye." },
+                    { "speaker": "B", "farsi": "خدا حافظ.", "transliteration": "xodā hāfez.", "english": "Goodbye." }
+                ],
+                "questions": [
+                  { "question": "What time of the day is it?", "options": ["Morning", "Late afternoon", "Night"], "correct_index": 1 },
+                  { "question": "What does A want to know?", "options": ["If B is Mr Kamran", "If the ticket is ready"], "correct_index": 0 },
+                  { "question": "Who is A?", "options": ["Mr Kamran", "Ms Ahmadi", "Ms Johnson"], "correct_index": 1 },
+                  { "question": "What two things is B offering A?", "options": ["A ticket and a message", "A parcel"], "correct_index": 0 },
+                  { "question": "What is B wishing?", "options": ["Goodnight", "Good luck", "A good journey"], "correct_index": 2 }
+                ]
+              }
+            ]
+          },
+          {
+            "unit_id": 2,
+            "unit_title": "Enquiring about health",
+            "description": "How to say 'How are you?', introductions, possession.",
+            "content_sequence": [
+              {
+                "type": "dialogue",
+                "id": "u2_d1",
+                "title": "Dialogue 1: How're you?",
+                "context": "Bahman (B) is ringing his close friend Ali (A).",
+                "lines": [
+                  { "speaker": "A", "farsi": "الو؟", "transliteration": "alou?", "english": "Hello?" },
+                  { "speaker": "B", "farsi": "علی جان، سلام.", "transliteration": "ali jān, salām.", "english": "Dear Ali, hello." },
+                  { "speaker": "A", "farsi": "سلام، چطوری؟", "transliteration": "salām, ceto(u)ri?", "english": "Hello, how're you?" },
+                  { "speaker": "B", "farsi": "خوبم، مرسی. تو چطوری؟", "transliteration": "xubam, mersi. to ceto(u)ri?", "english": "I'm fine, thank you. How're you?" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Grammar: Contraction of 'To Be'",
+                "introduction": "In spoken Farsi, the verb 'to be' is often contracted and attached to the preceding word.",
+                "grammar_points": [
+                  { 
+                    "rule": "Positive Forms", 
+                    "examples": [
+                      { "farsi": "من خوبم", "transliteration": "man xubam", "english": "I'm fine" },
+                      { "farsi": "تو خوبی", "transliteration": "to xubi", "english": "You're fine" },
+                      { "farsi": "او خوبه", "transliteration": "u xube", "english": "He/She's fine" },
+                      { "farsi": "آن خوبه", "transliteration": "ān (un) xube", "english": "It/That's fine" },
+                      { "farsi": "ما خوبیم", "transliteration": "mā xubim", "english": "We're fine" },
+                      { "farsi": "شما خوبید", "transliteration": "ŝomā xubid", "english": "You're fine" },
+                      { "farsi": "آنها خوبند", "transliteration": "ānhā xuband", "english": "They're fine" }
+                    ]
+                  }
+                ],
+                "notes": "What comes after the word 'xub' (fine) in the examples above are the reduced forms of the verb 'budan' (to be). They also act as personal endings for other verbs. Since these endings indicate 'person', the personal pronouns are often omitted as redundant. Note: In casual speech, the second-and third-person plural endings '-id' and '-and' are slightly modified as '-in' and '-an', respectively (e.g. shomā xubin)."
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "substitution",
+                "title": "Exercise 1",
+                "input_mode": "farsi",
+                "instruction": "Replace the word 'xub' (fine) with 'xoŝ-hāl' (happy). Write in Persian.",
+                "questions": [
+                  { "prompt": "I'm happy", "correct_answer": "من خوش حالم" },
+                  { "prompt": "You (inf) are happy", "correct_answer": "تو خوش حالی" },
+                  { "prompt": "He/she is happy", "correct_answer": "او خوش حاله" },
+                  { "prompt": "We are happy", "correct_answer": "ما خوش حالیم" },
+                  { "prompt": "You (pl) are happy", "correct_answer": "شما خوش حالید" },
+                  { "prompt": "They are happy", "correct_answer": "آنها خوش حالند" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Grammar: Reduced forms after vowels & Negatives",
+                "introduction": "Adjustments are made if the word ends in a vowel. Also, negatives do NOT reduce.",
+                "grammar_points": [
+                  { "rule": "After 'a'", "examples": [{ "transliteration": "man injām", "english": "I'm here" }] },
+                  { "rule": "After 'e'", "examples": [{ "transliteration": "man gorosn(e)am", "english": "I'm hungry" }] },
+                  { "rule": "Negative (No reduction)", "examples": [{ "farsi": "من نیستم", "transliteration": "man nistam", "english": "I am not" }] }
+                ],
+                "notes": "For the third person singular ('s/he, it') the original 'ast' is used with a slight modification. For instance, 'inja ast' becomes 'injast' (He is here) and 'gorosne ast' becomes 'gorosn(e)ast' (He is hungry). Notice the pronunciation of the last example: the vowel 'e' is almost dropped. \n\nNote: Unlike English, the Persian verb 'budan' (to be) has no reduced negative forms. Therefore, 'mā ... nistim' would be an equivalent to these English sentences: We are not ...; We aren't...; We're not ..."
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 2",
+                "instruction": "Translate into Persian.",
+                "questions": [
+                  { "prompt": "I am not hungry", "correct_answer": "من گرسنه نیستم" },
+                  { "prompt": "We are not hungry", "correct_answer": "ما گرسنه نیستیم" },
+                  { "prompt": "You (inf) are not hungry", "correct_answer": "تو گرسنه نیستی" },
+                  { "prompt": "They are not hungry", "correct_answer": "آنها گرسنه نیستند" },
+                  { "prompt": "You (pl) are not hungry", "correct_answer": "شما گرسنه نیستید" },
+                  { "prompt": "He/she is not hungry", "correct_answer": "او گرسنه نیست" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Grammar: Questions",
+                "content": "Questions beginning with question words have a falling tone.",
+                "grammar_points": [
+                  { "rule": "Question Words", "examples": [
+                      { "transliteration": "ce / ci", "english": "what" },
+                      { "transliteration": "ki", "english": "who" },
+                      { "transliteration": "cerā", "english": "why" },
+                      { "transliteration": "kei", "english": "when" },
+                      { "transliteration": "kodum", "english": "which" },
+                      { "transliteration": "ceto(u)r", "english": "how" },
+                      { "transliteration": "kojā", "english": "where" },
+                      { "transliteration": "cand", "english": "how many" },
+                      { "transliteration": "cegune", "english": "how (more literary)" },
+                      { "transliteration": "ku", "english": "where is it? (col)" },
+                      { "transliteration": "cand tā", "english": "how many (col)" },
+                      { "transliteration": "ceqadr", "english": "how much" },
+                      { "transliteration": "cand vaqt", "english": "how long" }
+                  ]}
+                ],
+                "notes": "The above question words normally carry the sentence stress. After 'cand' or 'cand tā' (how many), the noun takes a singular form."
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 3",
+                "instruction": "Can you say these in Persian?",
+                "questions": [
+                  { "id": 1, "prompt": "How're you? (inf)", "correct_answer": "چطوری" },
+                  { "id": 2, "prompt": "How're you? (f)", "correct_answer": "چطورید" },
+                  { "id": 3, "prompt": "How's Mum/Dad?", "correct_answer": "مامان/بابا چطورند" },
+                  { "id": 4, "prompt": "How're the family?", "correct_answer": "خانواده چطورند" },
+                  { "id": 5, "prompt": "How's Parviz?", "correct_answer": "پرویز چطوره" },
+                  { "id": 6, "prompt": "Are you OK?", "correct_answer": "خوبید" },
+                  { "id": 7, "prompt": "Are you tired?", "correct_answer": "خسته اید" }
+                ]
+              },
+              {
+                "type": "dialogue",
+                "id": "u2_d2",
+                "title": "Dialogue 2: Pleased to meet you!",
+                "lines": [
+                  { "speaker": "A", "farsi": "سلام. من احمدی هستم. اسم شما چیه؟", "transliteration": "salām. man ahmadi hastam. esm-e ŝomā cie?", "english": "Hello. I am Ahmadi. What's your name?" },
+                  { "speaker": "B", "farsi": "سلام. من بهزادی هستم.", "transliteration": "salām. man behzādi hastam.", "english": "Hello. I am Behzadi." }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Grammar: Ezāfe & Possession",
+                "introduction": "Ezāfe (-e) links nouns.",
+                "grammar_points": [
+                  { "rule": "Possession", "examples": [{ "farsi": "تلفنِ جک", "transliteration": "telefon-e jak", "english": "Jack's telephone" }] },
+                  { "rule": "Adjective", "examples": [{ "farsi": "فیلم بد", "transliteration": "film-e bad", "english": "Bad film" }] }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 4",
+                "instruction": "Translate using Ezāfe in Persian.",
+                "questions": [
+                  { "prompt": "My car", "correct_answer": "ماشین من" },
+                  { "prompt": "My telephone", "correct_answer": "تلفن من" },
+                  { "prompt": "His/her name", "correct_answer": "اسم او" },
+                  { "prompt": "Our flat", "correct_answer": "آپارتمان ما" },
+                  { "prompt": "Their computer", "correct_answer": "کامپیوتر آنها" }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 6",
+                "instruction": "Repeat Exercise 4 using possessive endings (e.g. My car -> mashinam). Write in Persian.",
+                "questions": [
+                  { "prompt": "My car", "correct_answer": "ماشینم" },
+                  { "prompt": "My telephone", "correct_answer": "تلفنم" },
+                  { "prompt": "His/her name", "correct_answer": "اسمش" },
+                  { "prompt": "Our flat", "correct_answer": "آپارتمانمون" },
+                  { "prompt": "Their computer", "correct_answer": "کامپیوترشون" }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "title": "Exercise 7",
+                "input_mode": "farsi",
+                "instruction": "Respond to 'I am hungry' etc. with 'So am I' / 'So do I'. Write in Persian.",
+                "questions": [
+                  { "prompt": "So am I", "correct_answer": "من هم همین طور" },
+                  { "prompt": "So are we", "correct_answer": "ما هم همین طور" },
+                  { "prompt": "So is Peter", "correct_answer": "پیتر هم همین طور" },
+                  { "prompt": "So do I", "correct_answer": "من هم همین طور" },
+                  { "prompt": "So does s/he", "correct_answer": "او هم همین طور" },
+                  { "prompt": "So have I", "correct_answer": "من هم همین طور" },
+                  { "prompt": "Nor did we", "correct_answer": "ما هم همین طور" },
+                  { "prompt": "Nor will I", "correct_answer": "من هم همین طور" }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "fill_in_blank",
+                "input_mode": "farsi",
+                "title": "Exercise 8",
+                "instruction": "Complete these questions (e.g. 'What is your name?'). Write in Persian.",
+                "questions": [
+                  { "prompt": "What's your name? (f)", "correct_answer": "اسمتون چیه؟" },
+                  { "prompt": "What's his/her address?", "correct_answer": "آدرسش چیه؟" },
+                  { "prompt": "What's their nationality?", "correct_answer": "ملیتشون چیه؟" },
+                  { "prompt": "What's your date of birth? (f)", "correct_answer": "تاریخ تولدتون چیه؟" },
+                  { "prompt": "What's your phone number? (inf)", "correct_answer": "شماره تلفنت چنده؟" }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 9",
+                "instruction": "Translate into Persian.",
+                "questions": [
+                  { "prompt": "How's your mother? She's fine, thanks.", "correct_answer": "مادرتون چطورند؟ خوبند مرسی." },
+                  { "prompt": "What's your job? I'm a doctor.", "correct_answer": "کارتون چیه؟ دکتر هستم." },
+                  { "prompt": "Your flat is pretty. Thank you.", "correct_answer": "آپارتمانتون قشنگه. ممنون." },
+                  { "prompt": "Who's this? That's my brother.", "correct_answer": "این کیه؟ اون برادرمه." },
+                  { "prompt": "What's that? It's my lunch.", "correct_answer": "اون چیه؟ اون ناهارمه." },
+                  { "prompt": "Where's your car? It's here. Where's yours?", "correct_answer": "ماشینتون کجاست؟ اینجاست. مال شما کجاست؟" },
+                  { "prompt": "Whose car is this? It's mine.", "correct_answer": "این ماشین مال کیه؟ مال منه." }
+                ]
+              },
+              {
+                "type": "comprehension",
+                "title": "Comprehension Quiz",
+                "questions": [
+                  { "question": "Where is Ahmad calling from?", "options": ["Tehran", "London"], "correct_index": 1 },
+                  { "question": "Who is he with?", "options": ["Alone", "With family"], "correct_index": 1 }
+                ]
+              }
+            ]
+          },
+          {
+            "unit_id": 3,
+            "unit_title": "Where are you from? (کجایی هستید؟)",
+            "description": "Seek and give personal details: gender, nationality, marital status, place of birth, hobbies, occupation.",
+            "content_sequence": [
+              {
+                "type": "dialogue",
+                "id": "u3_d1",
+                "title": "Dialogue 1: Party game: Who am I?",
+                "context": "At an Iranian party in London. Guests try to identify a well-known figure.",
+                "lines": [
+                  { "speaker": "A", "farsi": "شما زن هستید؟", "transliteration": "ŝomā zan hastid?", "english": "Are you a woman?" },
+                  { "speaker": "B", "farsi": "نه.", "transliteration": "na.", "english": "No." },
+                  { "speaker": "A", "farsi": "ملیتتون چیه؟", "transliteration": "melliyatetun cie?", "english": "What's your nationality?" },
+                  { "speaker": "B", "farsi": "بریتانیایی هستم.", "transliteration": "beritāniāyi hastam.", "english": "I'm British." },
+                  { "speaker": "A", "farsi": "شما متأهليد؟", "transliteration": "ŝomā mota ahhelid?", "english": "Are you married?" },
+                  { "speaker": "B", "farsi": "بله.", "transliteration": "bale.", "english": "Yes." },
+                  { "speaker": "A", "farsi": "خانمتون کجایی هستند؟", "transliteration": "xānometun kojāyi hastand?", "english": "Where does your wife come from?" },
+                  { "speaker": "B", "farsi": "اون هم بریتانیاییه.", "transliteration": "un (h)am beritāniāyie.", "english": "She too is British." },
+                  { "speaker": "A", "farsi": "محل تولدتون کجاست؟", "transliteration": "mahall-e tavallodetun kojāst?", "english": "Where's your place of birth?" },
+                  { "speaker": "B", "farsi": "لندن.", "transliteration": "landan.", "english": "London." },
+                  { "speaker": "A", "farsi": "سرگرمی هاتون چیه؟", "transliteration": "sargarmihātun cie?", "english": "What are your hobbies?" },
+                  { "speaker": "B", "farsi": "موسیقی، ورزش، مطالعه.", "transliteration": "musiqi, varzeŝ, motāle`e.", "english": "Music, sport, reading." },
+                  { "speaker": "A", "farsi": "کارتون چیه؟", "transliteration": "kāretun cie?", "english": "What's your job?" },
+                  { "speaker": "B", "farsi": "کارمند هستم.", "transliteration": "kārmand hastam.", "english": "I'm a (civil) servant." },
+                  { "speaker": "A", "farsi": "محل کارتون کجاست؟", "transliteration": "mahall-e kāretun kojāst?", "english": "Where's your place of work?" },
+                  { "speaker": "B", "farsi": "لندن، خیابان داونینگ، پلاک ۱۰.", "transliteration": "landan, xiābān-e dāwning, pelāk-e dah.", "english": "London, Downing Street, No. 10." },
+                  { "speaker": "A", "farsi": "شما نخست وزیر هستید؟", "transliteration": "ŝomā noxost-vazir hastid?", "english": "Are you the Prime Minister?" },
+                  { "speaker": "B", "farsi": "بله، متشکرم.", "transliteration": "bale, mot(a)ŝakkeram.", "english": "Yes, thank you." }
+                ]
+              },
+              {
+                "type": "vocabulary",
+                "title": "Vocabulary: Dialogue 1",
+                "items": [
+                  { "farsi": "زن", "transliteration": "zan", "english": "woman" },
+                  { "farsi": "نه", "transliteration": "na", "english": "no" },
+                  { "farsi": "ملیت", "transliteration": "melliyat", "english": "nationality" },
+                  { "farsi": "چی", "transliteration": "ci", "english": "what" },
+                  { "farsi": "چیه", "transliteration": "cie", "english": "what's (what is)" },
+                  { "farsi": "بریتانیایی", "transliteration": "beritāniāyi", "english": "British" },
+                  { "farsi": "متأهل", "transliteration": "mota-ahhel", "english": "married" },
+                  { "farsi": "بله", "transliteration": "bale", "english": "yes" },
+                  { "farsi": "خانم", "transliteration": "xānom", "english": "wife, madam" },
+                  { "farsi": "کجا", "transliteration": "kojā", "english": "where" },
+                  { "farsi": "کجایی", "transliteration": "kojāyi", "english": "where from" },
+                  { "farsi": "هم", "transliteration": "ham", "english": "too, also" },
+                  { "farsi": "محل", "transliteration": "mahall", "english": "place" },
+                  { "farsi": "تولد", "transliteration": "tavallod", "english": "birth" },
+                  { "farsi": "کجاست", "transliteration": "kojāst", "english": "where's" },
+                  { "farsi": "لندن", "transliteration": "landan", "english": "London" },
+                  { "farsi": "سرگرمی", "transliteration": "sargarmi", "english": "hobby" },
+                  { "farsi": "سرگرمی ها", "transliteration": "sargarmihā", "english": "hobbies" },
+                  { "farsi": "موسیقی", "transliteration": "musiqi", "english": "music" },
+                  { "farsi": "ورزش", "transliteration": "varzeŝ", "english": "sport" },
+                  { "farsi": "مطالعه", "transliteration": "motāle'e", "english": "reading" },
+                  { "farsi": "کار", "transliteration": "kār", "english": "job, work" },
+                  { "farsi": "کارمند", "transliteration": "kārmand", "english": "(civil) servant" },
+                  { "farsi": "خیابان", "transliteration": "xiābān", "english": "street" },
+                  { "farsi": "خیابان داونینگ", "transliteration": "xiābān-e dāwning", "english": "Downing Street" },
+                  { "farsi": "پلاک", "transliteration": "pelāk", "english": "(house) number" },
+                  { "farsi": "نخست وزیر", "transliteration": "noxost-vazir", "english": "Prime Minister" },
+                  { "farsi": "متشکر", "transliteration": "motaŝakker", "english": "thankful, grateful" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Grammar: How to describe nationality",
+                "introduction": "The basic formula is: Place name + i (suffix).",
+                "grammar_points": [
+                  { "rule": "Place name + i", "examples": [
+                      { "transliteration": "irān -> irāni", "english": "Iranian" },
+                      { "transliteration": "engelis -> engelisi", "english": "English" },
+                      { "transliteration": "eskatland -> eskatlandi", "english": "Scottish" },
+                      { "transliteration": "pākestān -> pākestāni", "english": "Pakistani" },
+                      { "transliteration": "zhāpon -> zhāponi", "english": "Japanese" }
+                  ]},
+                  { "rule": "Place name (ending in vowel) + yi", "examples": [
+                      { "transliteration": "beritāniā -> beritāniāyi", "english": "British" },
+                      { "transliteration": "āmrikā -> āmrikāyi", "english": "American" },
+                      { "transliteration": "kānādā -> kānādāyi", "english": "Canadian" },
+                      { "transliteration": "osterāliā -> osterāliāyi", "english": "Australian" }
+                  ]}
+                ],
+                "notes": "If a place name already ends in 'i', various forms may be used (e.g. libi -> libiāyi 'Libyan'). Word stress is shifted over to the suffix."
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "matching",
+                "title": "Exercise 1",
+                "instruction": "Match the place with the nationality.",
+                "pairs": [
+                  { "id": 1, "prompt": "تهران", "match": "تهرانی" },
+                  { "id": 2, "prompt": "لندن", "match": "لندنی" },
+                  { "id": 3, "prompt": "پاریس", "match": "پاریسی" },
+                  { "id": 4, "prompt": "مشهد", "match": "مشهدی" },
+                  { "id": 5, "prompt": "اصفهان", "match": "اصفهانی" },
+                  { "id": 6, "prompt": "ایتالیا", "match": "ایتالیایی" }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 2",
+                "instruction": "You have met a Persian speaker. Ask them questions in Persian.",
+                "questions": [
+                  { "prompt": "Ask if he/she is Iranian.", "correct_answer": "شما ایرانی هستید؟" },
+                  { "prompt": "Ask if he/she is married.", "correct_answer": "شما متاهلید؟" },
+                  { "prompt": "Ask where he/she was born.", "correct_answer": "محل تولدتون کجاست؟" },
+                  { "prompt": "Ask where he/she works.", "correct_answer": "محل کارتون کجاست؟" },
+                  { "prompt": "Ask where his wife/her husband comes from.", "correct_answer": "همسرتون کجایی هستند؟" },
+                  { "prompt": "Ask what his/her hobbies are.", "correct_answer": "سرگرمی هاتون چیه؟" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Grammar: Plural of Nouns",
+                "content": "The most common way to make a noun plural is by adding the suffix -hā.",
+                "grammar_points": [
+                  { "rule": "Suffix -hā (General)", "examples": [
+                      { "transliteration": "telefon -> telefonhā", "english": "telephones" },
+                      { "transliteration": "sargarmi -> sargarmihā", "english": "hobbies" }
+                  ]},
+                  { "rule": "Inanimate Nouns", "content": "With inanimate nouns, the verb can take a singular form.", "examples": [
+                      { "farsi": "کامپیوترها خرابند", "transliteration": "kāmpiuterhā xarāband", "english": "The computers are broken (plural verb)" },
+                      { "farsi": "کامپیوترها خرابه", "transliteration": "kāmpiuterhā xarābe", "english": "The computers are broken (singular verb)" }
+                  ]},
+                  { "rule": "Suffix -ān (Animate/Formal)", "content": "For animate nouns (people), the suffix -ān is often used in formal contexts.", "examples": [
+                      { "transliteration": "mard -> mardān", "english": "men" },
+                      { "transliteration": "dust -> dustān", "english": "friends" },
+                      { "transliteration": "āqā -> āqāyān", "english": "gentlemen" },
+                      { "transliteration": "dāneŝju -> dāneŝjuyān", "english": "students" }
+                  ]}
+                ],
+                "notes": "The 'h' of the plural marker -hā is often dropped in speech. Adjectives can also be pluralised (e.g. xubān - the good/good people). The plural endings carry the word stress."
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 3",
+                "instruction": "Write the plural of these nouns in Persian script.",
+                "questions": [
+                  { "prompt": "آپارتمان (flat)", "correct_answer": "آپارتمان ها" },
+                  { "prompt": "ماشین (car)", "correct_answer": "ماشین ها" },
+                  { "prompt": "روزنامه (newspaper)", "correct_answer": "روزنامه ها" },
+                  { "prompt": "ایرانی (Iranian)", "correct_answer": "ایرانی ها" },
+                  { "prompt": "دوست (friend)", "correct_answer": "دوستان" },
+                  { "prompt": "خوش رو (friendly person)", "correct_answer": "خوش رویان" }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 4",
+                "instruction": "Can you say these in Persian?",
+                "questions": [
+                  { "prompt": "Where are you from?", "correct_answer": "کجایی هستید؟" },
+                  { "prompt": "I'm from London.", "correct_answer": "لندنی هستم" },
+                  { "prompt": "I'm Italian.", "correct_answer": "ایتالیایی هستم" },
+                  { "prompt": "My place of birth is London.", "correct_answer": "محل تولدم لندن است" },
+                  { "prompt": "My hobbies are music and reading.", "correct_answer": "سرگرمی هام موسیقی و مطالعه است" },
+                  { "prompt": "My watch is made in Japan.", "correct_answer": "ساعتم ساخت ژاپن است" }
+                ]
+              },
+              {
+                "type": "dialogue",
+                "id": "u3_d2",
+                "title": "Dialogue 2: Introducing B to C",
+                "context": "Mr Ahmadi (A) introduces his colleague Mr Morris (B) to his wife Shahin (C).",
+                "lines": [
+                  { "speaker": "A", "farsi": "آقای موریس همکارم هستند و ایشون خانمم هستند.", "transliteration": "āqā-ye moris hamkāram (hastand), va iŝun xānomam hastand.", "english": "Mr Morris is my colleague, and this is my wife." },
+                  { "speaker": "C", "farsi": "خوشوقتم.", "transliteration": "xoŝvaqtam.", "english": "I'm pleased (to meet you)." },
+                  { "speaker": "B", "farsi": "من هم همین طور. آپارتمان قشنگی دارید.", "transliteration": "man (h)am hamin-to(u)r. āpārtemān-e qaŝangi dārid.", "english": "So am I. You have a nice flat." },
+                  { "speaker": "C", "farsi": "متشکرم. لطف دارید.", "transliteration": "mot(a)ŝakkeram. lotf dārid.", "english": "Thank you. That's very kind of you." }
+                ]
+              },
+              {
+                "type": "vocabulary",
+                "title": "Vocabulary: Dialogue 2",
+                "items": [
+                  { "farsi": "آقای", "transliteration": "āqā-ye", "english": "Mr" },
+                  { "farsi": "همکار", "transliteration": "hamkār", "english": "colleague" },
+                  { "farsi": "ایشون", "transliteration": "iŝun", "english": "he, she (pol)" },
+                  { "farsi": "خانم", "transliteration": "xānom", "english": "wife" },
+                  { "farsi": "خوشوقت", "transliteration": "xoŝvaqt", "english": "pleased" },
+                  { "farsi": "آپارتمان", "transliteration": "āpārtemān", "english": "apartment" },
+                  { "farsi": "قشنگ", "transliteration": "qaŝang", "english": "nice, pretty" },
+                  { "farsi": "دارید", "transliteration": "dārid", "english": "you have" },
+                  { "farsi": "داشتن", "transliteration": "dāŝtan", "english": "to have" },
+                  { "farsi": "متشکر", "transliteration": "mot(a)ŝakker", "english": "grateful" },
+                  { "farsi": "لطف", "transliteration": "lotf", "english": "kindness" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Grammar: The Verb 'To Have' (Dāshtan)",
+                "content": "All Persian verbs end with '-an'. Present stem of 'dashtan' is 'dār'.",
+                "grammar_points": [
+                  { "rule": "Positive Conjugation", "examples": [
+                      { "farsi": "من دارم", "transliteration": "man dāram", "english": "I have" },
+                      { "farsi": "تو داری", "transliteration": "to dāri", "english": "You have" },
+                      { "farsi": "او دارد / داره", "transliteration": "u dārad / dāre", "english": "He/She has" },
+                      { "farsi": "ما داریم", "transliteration": "mā dārim", "english": "We have" },
+                      { "farsi": "شما دارید", "transliteration": "ŝomā dārid", "english": "You have" },
+                      { "farsi": "آنها دارند", "transliteration": "ānhā dārand", "english": "They have" }
+                  ]},
+                  { "rule": "Negative Conjugation", "content": "Add na- to the beginning (stress on na).", "examples": [
+                      { "farsi": "من ندارم", "transliteration": "man nadāram", "english": "I don't have" }
+                  ]}
+                ],
+                "notes": "We don't need the Persian equivalent of 'a' (indefinite article) for this pattern (e.g. 'man mashin daram' = I have a car). The verb 'to have' is also used to talk about age: 'man 20 sal daram' (I am 20 years old)."
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "matching",
+                "title": "Exercise 5",
+                "instruction": "Match the pronoun with the verb ending for 'to have'.",
+                "pairs": [
+                  { "id": 1, "prompt": "من", "match": "دارم" },
+                  { "id": 2, "prompt": "تو", "match": "داری" },
+                  { "id": 3, "prompt": "او", "match": "داره" },
+                  { "id": 4, "prompt": "ما", "match": "داریم" },
+                  { "id": 5, "prompt": "شما", "match": "دارید" },
+                  { "id": 6, "prompt": "آنها", "match": "دارند" }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 6",
+                "instruction": "Make these sentences negative in Persian.",
+                "questions": [
+                  { "prompt": "من تلفن دارم", "correct_answer": "من تلفن ندارم" },
+                  { "prompt": "تو بلیت داری", "correct_answer": "تو بلیت نداری" },
+                  { "prompt": "او ۲۵ سال داره", "correct_answer": "او ۲۵ سال نداره" },
+                  { "prompt": "ما اتاق خالی داریم", "correct_answer": "ما اتاق خالی نداریم" },
+                  { "prompt": "شما وقت دارید", "correct_answer": "شما وقت ندارید" },
+                  { "prompt": "آنها پول دارند", "correct_answer": "آنها پول ندارند" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Cardinal Numbers (1-1000+)",
+                "content": "From 21 onwards we add 'o' (and) between numbers.",
+                "grammar_points": [
+                  { "rule": "1-10", "examples": [{ "transliteration": "yek, do, se, cahār, panj, ŝeŝ, haft, haŝt, noh, dah", "english": "1, 2, 3, 4, 5, 6, 7, 8, 9, 10" }] },
+                  { "rule": "11-20", "examples": [{ "transliteration": "yāzdah, davāzdah, sizdah, cahārdah, pānzdah, ŝānzdah, hefdah, hejdah, nuzdah, bist", "english": "11-20" }] },
+                  { "rule": "Tens", "examples": [{ "transliteration": "bist, si, cehel, panjāh, ŝast, haftād, haŝtād, navad, sad", "english": "20, 30, 40, 50, 60, 70, 80, 90, 100" }] },
+                  { "rule": "Hundreds", "examples": [{ "transliteration": "devist, sisad, cahārsad, pānsad, ŝeŝsad, haftsad, haŝtsad, nohsad, hezār", "english": "200, 300 ... 1000" }] },
+                  { "rule": "Millions", "examples": [{ "transliteration": "yek milyun", "english": "1,000,000" }] }
+                ],
+                "notes": "After a number or 'cand tā' (how many), the noun comes in the singular (e.g. panj mashin = five cars)."
+              },
+              {
+                "type": "teaching",
+                "title": "Indefinite & Definite Articles",
+                "content": "Persian often doesn't distinguish 'a' and 'the' (masin xarabe = The car is broken). To mark indefinite, we use 'yek' (one) or suffix '-i'.",
+                "grammar_points": [
+                  { "rule": "Indefinite", "examples": [
+                      { "farsi": "یک آپارتمان", "transliteration": "yek āpārtemān", "english": "A flat" },
+                      { "farsi": "آپارتمانی", "transliteration": "āpārtemāni", "english": "A flat" }
+                  ]}
+                ],
+                "notes": "When the noun is qualified by an adjective, the ending goes after the adjective: aparteman-e qasangi (a nice flat)."
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 7",
+                "instruction": "Translate into Persian.",
+                "questions": [
+                  { "prompt": "You have a nice car!", "correct_answer": "ماشین قشنگی دارید" },
+                  { "prompt": "That's very kind of you.", "correct_answer": "لطف دارید" },
+                  { "prompt": "I'm sorry, I don't have time.", "correct_answer": "ببخشید، وقت ندارم" },
+                  { "prompt": "He's 30 years old.", "correct_answer": "سی سال داره" },
+                  { "prompt": "This is my friend Peter.", "correct_answer": "این دوستم پیتره" },
+                  { "prompt": "Pleased to meet you. So am I.", "correct_answer": "خوشوقتم. من هم همین طور" },
+                  { "prompt": "I have five Iranian friends.", "correct_answer": "من پنج دوست ایرانی دارم" }
+                ]
+              },
+              {
+                "type": "comprehension",
+                "title": "Comprehension Quiz",
+                "context": "Parviz Alizadeh's recorded message.",
+                "questions": [
+                  { "question": "What is his full name?", "options": ["Parviz Ahmadi", "Parviz Alizadeh", "Ali Alizadeh"], "correct_index": 1 },
+                  { "question": "What is his job?", "options": ["Teacher", "Civil Servant", "Engineer"], "correct_index": 1 },
+                  { "question": "Where was he born?", "options": ["Tehran", "Mashhad", "Shiraz"], "correct_index": 1 },
+                  { "question": "What is his wife's job?", "options": ["English Teacher", "Nurse", "Artist"], "correct_index": 0 },
+                  { "question": "Where was she born?", "options": ["America", "UK", "Iran"], "correct_index": 0 },
+                  { "question": "What is her nationality?", "options": ["American", "Iranian", "British"], "correct_index": 1 },
+                  { "question": "What are their hobbies?", "options": ["Cinema and Painting", "Sport and Reading", "Music and Travel"], "correct_index": 0 }
+                ]
+              }
+            ]
+          },
+          {
+            "unit_id": 4,
+            "unit_title": "The Weekend (آخر هفته - āxar-e hafte)",
+            "description": "Talk about past events, weekend activities, films, and food.",
+            "content_sequence": [
+              {
+                "type": "dialogue",
+                "id": "u4_d1",
+                "title": "Dialogue 1: Wish you were there!",
+                "context": "Simin (S) and Parviz (P) talk about last weekend.",
+                "lines": [
+                  { "speaker": "S", "farsi": "آخر هفته خوش گذشت؟", "transliteration": "āxar-e hafte xoŝ gozaŝt?", "english": "Did you have a good weekend?" },
+                  { "speaker": "P", "farsi": "بله، جاتون خالی بود!", "transliteration": "bale, jātun xāli bud!", "english": "Yes, you should have been there (lit: your place was vacant)!" },
+                  { "speaker": "S", "farsi": "خب، چه کار کردید؟ کجا رفتید؟", "transliteration": "xob, ce-kār kardid? kojā raftid?", "english": "So, what did you do? Where did you go?" },
+                  { "speaker": "P", "farsi": "شب جمعه رفتیم سینما. یک فیلم ایرانی دیدیم.", "transliteration": "ŝab-e jom'e raftim sinemā. ye(k) film-e irāni didim.", "english": "Thursday night we went to the cinema. We saw an Iranian film." },
+                  { "speaker": "S", "farsi": "خوب بود؟", "transliteration": "xub bud?", "english": "Was it good?" },
+                  { "speaker": "P", "farsi": "کمدی بود. خیلی خندیدیم. شما چه کار کردید؟", "transliteration": "komedi bud. xeili xandidim. ŝomā ce-kār kardid?", "english": "It was a comedy. We laughed a lot. What did you do?" },
+                  { "speaker": "S", "farsi": "پنجشنبه بعد از ظهر، مهمون داشتیم. جشن تولد پسرم بود.", "transliteration": "panj-ŝanbe ba'd-az-zohr, mehmun dāŝtim. jaŝn-e tavallode pesaram bud.", "english": "Thursday afternoon, we had guests. It was my son's birthday." },
+                  { "speaker": "P", "farsi": "به به! تولدش مبارک!", "transliteration": "bah-bah! tavallodeŝ mobārak!", "english": "Wow! Happy birthday to him!" },
+                  { "speaker": "S", "farsi": "ممنون.", "transliteration": "mamnun.", "english": "Thanks." },
+                  { "speaker": "P", "farsi": "غذا چطور بود؟", "transliteration": "qazā cetour bud?", "english": "How was the food?" },
+                  { "speaker": "S", "farsi": "عالی! دست پخت شوهرم بود!", "transliteration": "āli! dast-poxt-e ŝouharam bud!", "english": "Excellent! It was my husband's cooking!" },
+                  { "speaker": "P", "farsi": "البته، بدون شک!", "transliteration": "albatte, bedun-e ŝak!", "english": "Of course, without a doubt!" }
+                ]
+              },
+              {
+                "type": "vocabulary",
+                "title": "Vocabulary: Dialogue 1",
+                "items": [
+                  { "farsi": "آخر هفته", "transliteration": "āxar-e hafte", "english": "weekend" },
+                  { "farsi": "خوش گذشتن", "transliteration": "xoŝ gozaŝtan", "english": "to pass pleasantly" },
+                  { "farsi": "جا", "transliteration": "jā", "english": "place" },
+                  { "farsi": "خالی", "transliteration": "xāli", "english": "vacant / empty" },
+                  { "farsi": "رفتن", "transliteration": "raftan", "english": "to go" },
+                  { "farsi": "دیدن", "transliteration": "didan", "english": "to see" },
+                  { "farsi": "خندیدن", "transliteration": "xandidan", "english": "to laugh" },
+                  { "farsi": "مهمون", "transliteration": "mehmun", "english": "guest" },
+                  { "farsi": "جشن تولد", "transliteration": "jaŝn-e tavallod", "english": "birthday celebration" },
+                  { "farsi": "غذا", "transliteration": "qazā", "english": "food" },
+                  { "farsi": "دست پخت", "transliteration": "dast-poxt", "english": "cooking" },
+                  { "farsi": "شوهر", "transliteration": "ŝouhar", "english": "husband" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Grammar: Past Simple Tense",
+                "content": "Formula: Past stem + Personal ending. (Stem of 'raftan' is 'raft'). All Persian verbs end with -an. To get past stem, omit -an.",
+                "grammar_points": [
+                  { "rule": "Conjugation", "examples": [
+                      { "transliteration": "man raftam", "english": "I went" },
+                      { "transliteration": "to rafti", "english": "You went" },
+                      { "transliteration": "u raft", "english": "He went" },
+                      { "transliteration": "mā raftim", "english": "We went" },
+                      { "transliteration": "ŝomā raftid", "english": "You went" },
+                      { "transliteration": "ānhā raftand", "english": "They went" }
+                  ]},
+                  { "rule": "Negative", "content": "Add na- (man naraftam). If verb starts with vowel, use nay- (nayumad)."}
+                ],
+                "notes": "No personal ending is used for the third-person singular (he/she/it)."
+              },
+              {
+                "type": "teaching",
+                "title": "Days of the Week",
+                "content": "The week starts on Saturday in Iran.",
+                "grammar_points": [
+                  { "rule": "Days", "examples": [
+                      { "transliteration": "ŝanbe", "english": "Saturday" },
+                      { "transliteration": "yek-ŝanbe", "english": "Sunday" },
+                      { "transliteration": "do-ŝanbe", "english": "Monday" },
+                      { "transliteration": "se-ŝanbe", "english": "Tuesday" },
+                      { "transliteration": "cahār-ŝanbe", "english": "Wednesday" },
+                      { "transliteration": "panj-ŝanbe", "english": "Thursday" },
+                      { "transliteration": "jom'e", "english": "Friday (Weekend)" }
+                  ]}
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 1",
+                "instruction": "Translate into Persian.",
+                "questions": [
+                  { "prompt": "On Saturday, Ahmad came to London.", "correct_answer": "شنبه احمد به لندن آمد" },
+                  { "prompt": "On Sunday, we went to the supermarket.", "correct_answer": "یکشنبه ما به سوپرمارکت رفتیم" },
+                  { "prompt": "On Monday, we went to an Iranian restaurant.", "correct_answer": "دوشنبه ما به رستوران ایرانی رفتیم" },
+                  { "prompt": "On Tuesday, I went to a birthday party.", "correct_answer": "سه شنبه من به جشن تولد رفتم" },
+                  { "prompt": "On Wednesday, we went to a swimming pool.", "correct_answer": "چهارشنبه ما به استخر رفتیم" },
+                  { "prompt": "On Thursday, Ahmad went to Iran.", "correct_answer": "پنجشنبه احمد به ایران رفت" },
+                  { "prompt": "On Friday, my parents came to my home.", "correct_answer": "جمعه پدر و مادرم به خانه من آمدند" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Language Note: Reduction",
+                "content": "In casual speech, prepositions are dropped. 'man be sinemā raftam' -> 'raftam sinemā'.",
+                "grammar_points": [
+                  { "rule": "Example", "examples": [{ "transliteration": "raftam sinemā", "english": "I went to the cinema" }] }
+                ],
+                "notes": "Three things happen: Subject omitted, preposition omitted, verb placed before place."
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 2",
+                "instruction": "Repeat Exercise 1 using reduced forms (e.g. 'shanbe ahmad umad landan').",
+                "questions": [
+                  { "prompt": "On Saturday, Ahmad came to London.", "correct_answer": "شنبه احمد اومد لندن" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Grammar: Word Order",
+                "content": "Subject + Time + Manner + Place + Verb",
+                "grammar_points": [
+                  { "rule": "Example", "examples": [{ "transliteration": "man diruz bā tāksi be landan raftam", "english": "I went to London by taxi yesterday" }] }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 3: Word Order",
+                "instruction": "Put these jumbled Persian words in the correct order (Subject + Time + Manner + Place + Verb). Write the full sentence in Persian.",
+                "questions": [
+                  { "prompt": "لندن / رفتیم / مترو / به / دیروز / ما / با", "correct_answer": "ما دیروز با مترو به لندن رفتیم" },
+                  { "prompt": "کلاس / به / آمدید / امروز / شما / دیر", "correct_answer": "شما امروز دیر به کلاس آمدید" },
+                  { "prompt": "هواپیما / ایران / آنها / سه شنبه / به / رفتند / روز / با", "correct_answer": "آنها روز سه شنبه با هواپیما به ایران رفتند" },
+                  { "prompt": "با / رفتم / به / من / شنبه / خانمم / روز / سوپرمارکت", "correct_answer": "من روز شنبه با خانمم به سوپرمارکت رفتم" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Language Note: 'I saw a film'",
+                "content": "To say 'I saw a film in London yesterday': Subject + Time + Place + Object + Verb",
+                "grammar_points": [
+                  { "rule": "Example", "examples": [{ "farsi": "من دیروز در لندن یک فیلم دیدم", "transliteration": "man diruz dar landan yek film didam", "english": "I saw a film in London yesterday" }]}
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 4",
+                "instruction": "Translate into Persian.",
+                "questions": [
+                  { "prompt": "I ate lunch in a restaurant yesterday.", "correct_answer": "من دیروز در رستوران ناهار خوردم" },
+                  { "prompt": "I read a book in the library yesterday.", "correct_answer": "من دیروز در کتابخانه کتاب خواندم" },
+                  { "prompt": "I saw a film in the cinema last night.", "correct_answer": "من دیشب در سینما فیلم دیدم" },
+                  { "prompt": "I ate a sandwich at work this morning.", "correct_answer": "من امروز صبح در محل کار ساندویچ خوردم" },
+                  { "prompt": "I cooked an Iranian dish at home today.", "correct_answer": "من امروز در خانه غذای ایرانی درست کردم" },
+                  { "prompt": "What did you do at the weekend?", "correct_answer": "آخر هفته چه کار کردید؟" },
+                  { "prompt": "Nothing! I slept all day!", "correct_answer": "هیچ! تمام روز خوابیدم" }
+                ]
+              },
+              {
+                "type": "dialogue",
+                "id": "u4_d2",
+                "title": "Dialogue 2: Nothing to write home about!",
+                "context": "Cousins Saman (S) and Marjan (M) talk about their weekend.",
+                "lines": [
+                  { "speaker": "S", "farsi": "آخر هفته خوش گذشت؟", "transliteration": "āxar-e hafte xoŝ gozaŝt?", "english": "Did you have a good weekend?" },
+                  { "speaker": "M", "farsi": "تعریفی نداشت!", "transliteration": "ta'rifi nadāŝt!", "english": "Nothing to write home about! (lit: It didn't have any compliment)" },
+                  { "speaker": "S", "farsi": "چطور مگه؟", "transliteration": "cetour mage?", "english": "But why? (How come?)" },
+                  { "speaker": "M", "farsi": "کار خاصی نکردم. تو خونه موندم و تلویزیون تماشا کردم. آخر هفته ی تو چطور بود؟", "transliteration": "kār-e xāssi nakardam. tu xune mundam o televizion tamāŝā kardam. āxar-e hafte-ye to cetour bud?", "english": "I didn't do anything special. I stayed at home and watched TV. How was your weekend?" },
+                  { "speaker": "S", "farsi": "بد نبود. برای شام از سوپر مارکت یک ساندویچ و یک پیتزا خریدم.", "transliteration": "bad nabud. barāye ŝām az supermārket ye(k) sāndevic o ye(k) pitzā xaridam.", "english": "It wasn't bad. For dinner I bought a sandwich and a pizza from the supermarket." },
+                  { "speaker": "S", "farsi": "من ساندویچو خوردم؛ دوستم پیتزا رو خورد. بعد تا صبح شطرنج بازی کردیم!", "transliteration": "man sāndevic-o xordam; dustam pitzā-ro xord. ba`d tā sobh ŝatranj bāzi kardim!", "english": "I ate the sandwich; my friend ate the pizza. Then we played chess until morning!" },
+                  { "speaker": "M", "farsi": "بردی یا باختی؟", "transliteration": "bordi yā bāxti?", "english": "Did you win or lose?" },
+                  { "speaker": "S", "farsi": "مساوی شدیم!", "transliteration": "mosāvi ŝodim!", "english": "We drew!" }
+                ]
+              },
+              {
+                "type": "vocabulary",
+                "title": "Vocabulary: Dialogue 2",
+                "items": [
+                  { "farsi": "تعریف", "transliteration": "ta'rif", "english": "compliment" },
+                  { "farsi": "خاص", "transliteration": "xāss", "english": "special" },
+                  { "farsi": "تماشا کردن", "transliteration": "tamāŝā kardan", "english": "to watch" },
+                  { "farsi": "ماندن", "transliteration": "māndan (mundan)", "english": "to stay" },
+                  { "farsi": "خریدن", "transliteration": "xaridan", "english": "to buy" },
+                  { "farsi": "خوردن", "transliteration": "xordan", "english": "to eat" },
+                  { "farsi": "بازی کردن", "transliteration": "bāzi kardan", "english": "to play" },
+                  { "farsi": "بردن", "transliteration": "bordan", "english": "to win" },
+                  { "farsi": "باختن", "transliteration": "bāxtan", "english": "to lose" },
+                  { "farsi": "مساوی", "transliteration": "mosāvi", "english": "equal / draw" }
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Grammar: Compound Verbs",
+                "content": "Combine a noun/adjective with a simple verb like 'kardan'.",
+                "grammar_points": [
+                  { "rule": "Examples", "examples": [
+                      { "transliteration": "kār kardan", "english": "to work" },
+                      { "transliteration": "telefon kardan", "english": "to telephone" },
+                      { "transliteration": "bāzi kardan", "english": "to play" }
+                  ]}
+                ]
+              },
+              {
+                "type": "teaching",
+                "title": "Grammar: Direct Object Marker (rā)",
+                "introduction": "The word rā plays an important role.",
+                "content": "Golden Rules for 'rā': 1. Must be the object. 2. Must be direct. 3. Must be definite. 4. Must NOT be preceded by a preposition.",
+                "grammar_points": [
+                  { "rule": "Example", "examples": [
+                      { "farsi": "ساندویچو خوردم", "transliteration": "sāndevic-o xordam", "english": "I ate the sandwich" }
+                  ]}
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "comprehension",
+                "title": "Exercise 5: Concept Check",
+                "instruction": "Would these English sentences need 'ra' in Persian?",
+                "questions": [
+                  { "question": "I saw James.", "options": ["Yes", "No"], "correct_index": 0 },
+                  { "question": "I bought him a drink.", "options": ["Yes", "No"], "correct_index": 1 },
+                  { "question": "She ate the sandwich.", "options": ["Yes", "No"], "correct_index": 0 },
+                  { "question": "I looked at her.", "options": ["Yes", "No"], "correct_index": 1 }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "fill_in_blank",
+                "input_mode": "farsi",
+                "title": "Exercise 6: Object Marker (rā)",
+                "instruction": "Fill in the blank with 'را' (rā) if needed, or leave it empty. Write the full sentence in Persian.",
+                "questions": [
+                  { "prompt": "من امروز او ... دیدم", "correct_answer": "من امروز او را دیدم" },
+                  { "prompt": "من آب ... زیاد خوردم", "correct_answer": "من آب زیاد خوردم" },
+                  { "prompt": "من این آب ... نخوردم چون گرم بود", "correct_answer": "من این آب را نخوردم چون گرم بود" },
+                  { "prompt": "احمد برای من بستنی و کیک ... خرید", "correct_answer": "احمد برای من بستنی و کیک خرید" },
+                  { "prompt": "من کیک ... خوردم", "correct_answer": "من کیک را خوردم" }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 7",
+                "instruction": "Translate into Persian.",
+                "questions": [
+                  { "prompt": "I saw him/her today.", "correct_answer": "من امروز او را دیدم" },
+                  { "prompt": "I drank a lot of water.", "correct_answer": "من آب زیاد خوردم" },
+                  { "prompt": "I didn't drink this water because it was warm.", "correct_answer": "من این آب را نخوردم چون گرم بود" },
+                  { "prompt": "Ahmad bought ice cream and cake for me.", "correct_answer": "احمد برای من بستنی و کیک خرید" },
+                  { "prompt": "I ate the cake.", "correct_answer": "من کیک را خوردم" }
+                ]
+              },
+              {
+                "type": "exercise",
+                "exercise_type": "translation_input",
+                "input_mode": "farsi",
+                "title": "Exercise 8",
+                "instruction": "Can you say these in Persian?",
+                "questions": [
+                  { "prompt": "Did you have a good holiday?", "correct_answer": "تعطیلات خوش گذشت؟" },
+                  { "prompt": "Yes, wish you were there!", "correct_answer": "بله، جاتون خالی بود" },
+                  { "prompt": "Nothing to write home about!", "correct_answer": "تعریفی نداشت" },
+                  { "prompt": "We didn't do anything special.", "correct_answer": "کار خاصی نکردیم" },
+                  { "prompt": "We stayed at home and watched the rain!", "correct_answer": "تو خونه موندیم و بارون تماشا کردیم" },
+                  { "prompt": "What was your weekend like?", "correct_answer": "آخر هفته ات چطور بود؟" },
+                  { "prompt": "I worked on Saturday.", "correct_answer": "شنبه کار کردم" },
+                  { "prompt": "On Sunday I went to my friend's home.", "correct_answer": "یکشنبه به منزل دوستم رفتم" },
+                  { "prompt": "We ate some Iranian food.", "correct_answer": "غذای ایرانی خوردیم" },
+                  { "prompt": "I cooked it!", "correct_answer": "من درست کردم" },
+                  { "prompt": "We watched an Iranian film.", "correct_answer": "یک فیلم ایرانی دیدیم" },
+                  { "prompt": "We played backgammon.", "correct_answer": "تخته نرد بازی کردیم" }
+                ]
+              },
+              {
+                "type": "comprehension",
+                "title": "Comprehension: Simin's Story",
+                "context": "Simin talks about Mahnaz's party.",
+                "questions": [
+                  { "question": "Where did Simin go?", "options": ["Cinema", "Birthday party", "Park"], "correct_index": 1 },
+                  { "question": "How many guests were there?", "options": ["Fifty", "Twenty", "Ten"], "correct_index": 0 },
+                  { "question": "How was the food?", "options": ["Bad", "Excellent", "Cold"], "correct_index": 1 },
+                  { "question": "Who cooked the food?", "options": ["Mahnaz", "Mahnaz's mother", "Simin"], "correct_index": 1 },
+                  { "question": "What did they do after dinner?", "options": ["Watched a comedy film", "Slept", "Went home"], "correct_index": 0 }
+                ]
+              }
+            ]
+          } 
+        ]
+    };
 
-            <!-- Flashcards Tab -->
-            <div id="flashcards" class="tab-content">
-                <div class="section-title">Flashcards - Lesson <span id="flashcardsLessonNum">1</span></div>
-                <div id="flashcardsArea">
-                    <p>Select a lesson to practice with flashcards</p>
-                </div>
-            </div>
+    // ==========================================
+    // APP LOGIC
+    // ==========================================
 
-            <!-- Quiz Tab -->
-            <div id="quiz" class="tab-content">
-                <div class="section-title">Quiz - Lesson <span id="quizLessonNum">1</span></div>
-                <div id="quizArea">
-                    <p>Select a lesson to take a quiz</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    const contentArea = document.getElementById('contentArea');
+    const pageTitle = document.getElementById('pageTitle');
+    const backBtn = document.getElementById('backBtn');
 
-    <script>
-        // Global error handler to catch issues
-        window.addEventListener('error', function(e) {
-            console.error('Global error caught:', e.message, 'at', e.filename, 'line', e.lineno);
+    function init() {
+        if (!courseData || !courseData.units || courseData.units.length === 0) {
+            contentArea.innerHTML = '<div style="padding:40px;text-align:center;color:#888;"><h3>App is Ready</h3><p>Open the HTML file in a text editor and paste the JSON data into the <code>units</code> array.</p></div>';
+            return;
+        }
+        renderHome();
+    }
+
+    // --- RENDER HOME (Unit List) ---
+    function renderHome() {
+        backBtn.classList.add('hidden');
+        pageTitle.innerText = courseData.course_title;
+        contentArea.innerHTML = '';
+
+        const list = document.createElement('div');
+        
+        courseData.units.forEach((unit) => {
+            const el = document.createElement('div');
+            el.className = 'unit-card';
+            el.onclick = () => renderUnit(unit);
+            el.innerHTML = `
+                <div class="unit-meta">Unit ${unit.unit_id}</div>
+                <div class="unit-title">${unit.unit_title}</div>
+                <div class="unit-desc">${unit.description}</div>
+            `;
+            list.appendChild(el);
         });
         
-        window.addEventListener('unhandledrejection', function(e) {
-            console.error('Unhandled promise rejection:', e.reason);
-        });
+        contentArea.appendChild(list);
+    }
 
-        // Embedded textbook data
-        const UNITS = {
-            1: { name: "Unit 1: Foundations", lessons: [1, 2, 3], description: "Basic greetings, directions, and family" },
-            2: { name: "Unit 2: Daily Life", lessons: [4, 5, 6], description: "Routines, food, and shopping" },
-            3: { name: "Unit 3: Past & Present", lessons: [7, 8, 9], description: "Past tense, weather, and health" },
-            4: { name: "Unit 4: Movement", lessons: [10, 11, 12], description: "Travel, future plans, and culture" },
-            5: { name: "Unit 5: Mastery", lessons: [13, 14, 15], description: "Work, hobbies, and conversation" }
-        };
-        
-        const TEXTBOOK_DATA = {
-            "1": {
-                "title": "First Contact",
-                "vocabulary": [
-                    {"farsi": "سلام", "trans": "salaam", "english": "hello, hi"},
-                    {"farsi": "صبح بخیر", "trans": "sobh bekheyr", "english": "good morning"},
-                    {"farsi": "ممنون", "trans": "mamnun", "english": "thank you"},
-                    {"farsi": "خواهش می‌کنم", "trans": "khaahesh mikonam", "english": "you're welcome"},
-                    {"farsi": "بله", "trans": "baleh", "english": "yes"},
-                    {"farsi": "نه", "trans": "na", "english": "no"},
-                    {"farsi": "لطفاً", "trans": "lotfan", "english": "please"},
-                    {"farsi": "خوب", "trans": "khub", "english": "good, well"},
-                    {"farsi": "بد", "trans": "bad", "english": "bad"},
-                    {"farsi": "چطور", "trans": "chetor", "english": "how"}
-                ],
-                "phrases": [
-                    {"farsi": "حال شما چطور است؟", "trans": "haal-e shomaa chetor ast?", "english": "How are you? (formal)"},
-                    {"farsi": "خوبم، ممنون", "trans": "khubam, mamnun", "english": "I'm fine, thank you"},
-                    {"farsi": "اسم شما چیست؟", "trans": "esm-e shomaa chist?", "english": "What is your name?"},
-                    {"farsi": "خوشوقتم", "trans": "khoshvaghtam", "english": "Pleased to meet you"}
-                ],
-                "grammar": "Introduction to Persian script and alphabet. Basic greetings. Formal vs informal address: شما (shomaa - you formal) vs تو (to - you informal). The verb 'to be' in present tense (است - ast, هست - hast).",
-                "dialogue": "Ali and Sara meet for the first time:\nعلی: سلام! اسم من علی است.\nسارا: سلام! اسم من سارا است. خوشوقتم.\nعلی: حال شما چطور است؟\nسارا: خوبم، ممنون. شما چطورید؟\nعلی: من هم خوبم، متشکرم.",
-                "exercises": [
-                    "Write the Persian alphabet 5 times each",
-                    "Practice the formal greeting: حال شما چطور است؟",
-                    "Introduce yourself in Farsi using the patterns learned",
-                    "Match Persian greetings with their English meanings"
-                ],
-                "dialogueTranslit": "Ali and Sara meet for the first time:\nAli: Salaam! Esm-e man Ali ast.\nSaara: Salaam! Esm-e man Saara ast. Khoshvaghtam.\nAli: Haal-e shomaa chetor ast?\nSaara: Khubam, mamnun. Shomaa chetorid?\nAli: Man ham khubam, moteshakkeram."
-            },
-            "2": {
-                "title": "Getting Around",
-                "vocabulary": [
-                    {"farsi": "کجا", "trans": "kojaa", "english": "where"},
-                    {"farsi": "اینجا", "trans": "injaa", "english": "here"},
-                    {"farsi": "آنجا", "trans": "aanjaa", "english": "there"},
-                    {"farsi": "راست", "trans": "raast", "english": "right"},
-                    {"farsi": "چپ", "trans": "chap", "english": "left"},
-                    {"farsi": "مستقیم", "trans": "mostaqim", "english": "straight"},
-                    {"farsi": "خیابان", "trans": "khiyaabaan", "english": "street"},
-                    {"farsi": "میدان", "trans": "meydaan", "english": "square"},
-                    {"farsi": "نزدیک", "trans": "nazdik", "english": "near"},
-                    {"farsi": "دور", "trans": "door", "english": "far"}
-                ],
-                "phrases": [
-                    {"farsi": "کجا می‌روید؟", "trans": "kojaa miravid?", "english": "Where are you going?"},
-                    {"farsi": "از کجا آمده‌اید؟", "trans": "az kojaa aamade-id?", "english": "Where have you come from?"},
-                    {"farsi": "ببخشید، این کجاست؟", "trans": "bebakhshid, in kojaa-st?", "english": "Excuse me, where is this?"},
-                    {"farsi": "خیلی دور است؟", "trans": "kheyli door ast?", "english": "Is it very far?"}
-                ],
-                "grammar": "Present tense verb conjugation: می‌روم (miram - I go), می‌روی (miri - you go), می‌رود (miravad - he/she goes). Question words: کجا (where), چه (what), کی (who). Prepositions: از (from), به (to), در (in).",
-                "dialogue": "Asking for directions:\nتوریست: ببخشید، میدان آزادی کجاست؟\nمرد: مستقیم بروید و بعد به راست بپیچید.\nتوریست: خیلی دور است?\nمرد: نه، نزدیک است. پنج دقیقه پیاده.",
-                "exercises": [
-                    "Conjugate the verb 'to go' (رفتن) in present tense",
-                    "Form 5 questions using کجا (where)",
-                    "Practice giving directions using راست، چپ، مستقیم",
-                    "Translate: Where is the square? Is it near or far?"
-                ],
-                "dialogueTranslit": "Asking for directions:\nToorist: Bebakhshid, meydaan-e aazaadi kojaa-st?\nMard: Mostaghim beravid va ba'd be raast bepichid.\nToorist: Kheyli door ast?\nMard: Na, nazdik ast. Panj daghighe piaade."
-            },
-            "3": {
-                "title": "Family and Friends",
-                "vocabulary": [
-                    {"farsi": "خانواده", "trans": "khanevadeh", "english": "family"},
-                    {"farsi": "پدر", "trans": "pedar", "english": "father"},
-                    {"farsi": "مادر", "trans": "maadar", "english": "mother"},
-                    {"farsi": "برادر", "trans": "baraadar", "english": "brother"},
-                    {"farsi": "خواهر", "trans": "khahar", "english": "sister"},
-                    {"farsi": "پسر", "trans": "pesar", "english": "son"},
-                    {"farsi": "دختر", "trans": "dokhtar", "english": "daughter"},
-                    {"farsi": "دوست", "trans": "dust", "english": "friend"},
-                    {"farsi": "همسر", "trans": "hamsar", "english": "spouse"},
-                    {"farsi": "بچه", "trans": "bachche", "english": "child"}
-                ],
-                "phrases": [
-                    {"farsi": "خانواده شما چند نفر هستند؟", "trans": "khaanevaade-ye shomaa chand nafar hastand?", "english": "How many people are in your family?"},
-                    {"farsi": "برادر دارید؟", "trans": "baraadar daarid?", "english": "Do you have a brother?"},
-                    {"farsi": "پدر من معلم است", "trans": "pedar-e man mo'alem ast", "english": "My father is a teacher"}
-                ],
-                "grammar": "Possessive construction using ezafe: پدر من (my father), خانه‌ی او (his/her house). Numbers 1-10. Plural forms: adding ها or ان. Verb 'to have' (داشتن - daashtan).",
-                "dialogue": "Talking about family:\nسارا: خانواده شما چند نفر هستند?\nرضا: چهار نفر. پدر، مادر، یک برادر و من.\nسارا: برادر شما چه کار می‌کند?\nرضا: او دانشجو است.",
-                "dialogueTranslit": "Talking about family:\nSaara: Khaanevaade-ye shomaa chand nafar hastand?\nRezaa: Chahaar nafar. Pedar, maadar, yek baraadar va man.\nSaara: Baraadar-e shomaa che kaar mikonad?\nRezaa: Oo daneshju ast.",
-                "exercises": [
-                    "Learn numbers 1-10 in Farsi",
-                    "Describe your family using possessive forms",
-                    "Practice ezafe construction with 10 examples",
-                    "Translate: I have two sisters and one brother"
-                ]
-            },
-            "4": {
-                "title": "Daily Activities",
-                "vocabulary": [
-                    {"farsi": "کار", "trans": "kaar", "english": "work"},
-                    {"farsi": "خوابیدن", "trans": "khaabidan", "english": "to sleep"},
-                    {"farsi": "خوردن", "trans": "khordan", "english": "to eat"},
-                    {"farsi": "نوشیدن", "trans": "nooshidan", "english": "to drink"},
-                    {"farsi": "رفتن", "trans": "raftan", "english": "to go"},
-                    {"farsi": "آمدن", "trans": "aamadan", "english": "to come"},
-                    {"farsi": "صبحانه", "trans": "sobhane", "english": "breakfast"},
-                    {"farsi": "ناهار", "trans": "nahar", "english": "lunch"},
-                    {"farsi": "شام", "trans": "sham", "english": "dinner"},
-                    {"farsi": "ساعت", "trans": "saa'at", "english": "hour, clock"}
-                ],
-                "phrases": [
-                    {"farsi": "هر روز چه کار می‌کنید؟", "trans": "har rooz che kaar mikonid?", "english": "What do you do every day?"},
-                    {"farsi": "ساعت چند بیدار می‌شوید؟", "trans": "saa'at chand bidaar mishavid?", "english": "What time do you wake up?"},
-                    {"farsi": "من ساعت هفت صبحانه می‌خورم", "trans": "man saa'at haft sobhaane mikhoram", "english": "I eat breakfast at 7 o'clock"}
-                ],
-                "grammar": "Present continuous tense: می‌خورم (I am eating), می‌روم (I am going). Time expressions: هر روز (every day), امروز (today), فردا (tomorrow). Telling time using ساعت.",
-                "dialogue": "Daily routine:\nمریم: هر روز ساعت چند بیدار می‌شوید?\nعلی: ساعت شش صبح. شما چطور?\nمریم: من ساعت هفت. بعد صبحانه می‌خورم و به دانشگاه می‌روم.",
-                "exercises": [
-                    "Write about your daily routine in Farsi",
-                    "Conjugate 5 common verbs in present tense",
-                    "Practice telling time: What time is it?",
-                    "Create sentences using time expressions"
-                ],
-                "dialogueTranslit": "Daily routine:\nMaryam: Har rooz saa'at chand bidaar mishavid?\nAli: Saa'at shesh sobh. Shomaa chetor?\nMaryam: Man saa'at haft. Ba'd sobhaneh mikhoram va be daneshgah miram."
-            },
-            "5": {
-                "title": "Food and Restaurants",
-                "vocabulary": [
-                    {"farsi": "غذا", "trans": "ghaza", "english": "food"},
-                    {"farsi": "نان", "trans": "nan", "english": "bread"},
-                    {"farsi": "آب", "trans": "ab", "english": "water"},
-                    {"farsi": "چای", "trans": "chay", "english": "tea"},
-                    {"farsi": "قهوه", "trans": "ghahve", "english": "coffee"},
-                    {"farsi": "رستوران", "trans": "restoraan", "english": "restaurant"},
-                    {"farsi": "منو", "trans": "menoo", "english": "menu"},
-                    {"farsi": "برنج", "trans": "berenj", "english": "rice"},
-                    {"farsi": "گوشت", "trans": "goosht", "english": "meat"},
-                    {"farsi": "سبزی", "trans": "sabzi", "english": "vegetables"}
-                ],
-                "phrases": [
-                    {"farsi": "چه می‌خورید؟", "trans": "che mikhorid?", "english": "What will you eat/have?"},
-                    {"farsi": "یک چای لطفاً", "trans": "yek chay lotfan", "english": "One tea, please"},
-                    {"farsi": "حساب لطفاً", "trans": "hesaab lotfan", "english": "The bill, please"},
-                    {"farsi": "خوشمزه است", "trans": "khoshmaze ast", "english": "It's delicious"}
-                ],
-                "grammar": "Food vocabulary and cultural notes about Persian cuisine. Polite requests using لطفاً. Expressing preferences: دوست دارم (I like), ترجیح می‌دهم (I prefer).",
-                "dialogue": "At a restaurant:\nگارسون: چه میل دارید?\nمشتری: منو را لطفاً.\nگارسون: بفرمایید.\nمشتری: یک چلو کباب و یک چای لطفاً.",
-                "dialogueTranslit": "At a restaurant:\nGaarsun: Che mil daarid?\nMoshtari: Menoo raa lotfan.\nGaarsun: Befarmaa'id.\nMoshtari: Yek chelo kabaab va yek chay lotfan.",
-                "exercises": [
-                    "Learn 20 food items in Farsi",
-                    "Role-play ordering at a restaurant",
-                    "Write sentences about your favorite foods",
-                    "Practice: I like... I don't like..."
-                ]
-            },
-            "6": {
-                "title": "Shopping and Money",
-                "vocabulary": [
-                    {"farsi": "خرید", "trans": "kharid", "english": "shopping"},
-                    {"farsi": "فروشگاه", "trans": "forushgah", "english": "shop, store"},
-                    {"farsi": "بازار", "trans": "bazar", "english": "bazaar, market"},
-                    {"farsi": "پول", "trans": "pul", "english": "money"},
-                    {"farsi": "قیمت", "trans": "gheymat", "english": "price"},
-                    {"farsi": "گران", "trans": "geraan", "english": "expensive"},
-                    {"farsi": "ارزان", "trans": "arzaan", "english": "cheap"},
-                    {"farsi": "چقدر", "trans": "cheghadr", "english": "how much"},
-                    {"farsi": "تومان", "trans": "tomaan", "english": "toman (currency)"},
-                    {"farsi": "خریدن", "trans": "kharidan", "english": "to buy"}
-                ],
-                "phrases": [
-                    {"farsi": "این چقدر است؟", "trans": "in cheghadr ast?", "english": "How much is this?"},
-                    {"farsi": "خیلی گران است", "trans": "kheyli geraan ast", "english": "It's very expensive"},
-                    {"farsi": "تخفیف دارد؟", "trans": "takhfif daarad?", "english": "Is there a discount?"},
-                    {"farsi": "می‌خرم", "trans": "mikharam", "english": "I'll buy it"}
-                ],
-                "grammar": "Numbers 11-100. Currency and prices. Comparative adjectives: گران‌تر (more expensive), ارزان‌تر (cheaper). Shopping expressions and bargaining phrases.",
-                "dialogue": "At the bazaar:\nخریدار: سلام، این چقدر است؟\nفروشنده: صد هزار تومان.\nخریدار: خیلی گران است! هشتاد هزار تومان چطور است؟\nفروشنده: نود هزار تومان، آخرین قیمت.\nخریدار: باشد، می‌خرم.",
-                "exercises": [
-                    "Learn numbers 11-100 in Farsi",
-                    "Practice asking prices: این چقدر است؟",
-                    "Role-play a shopping conversation",
-                    "Write about things you want to buy"
-                ],
-                "dialogueTranslit": "At the bazaar:\nKharidaar: Salaam, in cheghadr ast?\nForooshandeh: Sad hezaar tomaan.\nKharidaar: Kheyli geraan ast! Hashtaad hezaar tomaan chetor ast?\nForooshandeh: Navad hezaar tomaan, aakharin gheymat.\nKharidaar: Baasheh, mikharam."
-            },
-            "7": {
-                "title": "Past Tense and Memories",
-                "vocabulary": [
-                    {"farsi": "دیروز", "trans": "irooz", "english": "yesterday"},
-                    {"farsi": "پریروز", "trans": "parirooz", "english": "day before yesterday"},
-                    {"farsi": "هفته گذشته", "trans": "hafte-ye gozashte", "english": "last week"},
-                    {"farsi": "سال پیش", "trans": "saal-e pish", "english": "last year"},
-                    {"farsi": "رفتم", "trans": "raftam", "english": "I went"},
-                    {"farsi": "دیدم", "trans": "didam", "english": "I saw"},
-                    {"farsi": "گفتم", "trans": "goftam", "english": "I said"},
-                    {"farsi": "شنیدم", "trans": "shenidam", "english": "I heard"},
-                    {"farsi": "خواندم", "trans": "khaandam", "english": "I read"},
-                    {"farsi": "نوشتم", "trans": "neveshtam", "english": "I wrote"}
-                ],
-                "phrases": [
-                    {"farsi": "دیروز به سینما رفتم", "trans": "dirooz be sinemaa raftam", "english": "Yesterday I went to the cinema"},
-                    {"farsi": "یک فیلم دیدم", "trans": "yek film didam", "english": "I saw a movie"},
-                    {"farsi": "چه کردید؟", "trans": "che kardid?", "english": "What did you do?"},
-                    {"farsi": "کجا بودید؟", "trans": "kojaa budid?", "english": "Where were you?"}
-                ],
-                "grammar": "Past tense formation: verb stem + past tense endings (م- ام، ی- ای، صفر، یم- ایم، ید- اید، ند- اند). Regular and irregular verbs in past tense. Time expressions for past events.",
-                "dialogue": "Talking about the weekend:\nعلی: آخر هفته چه کردی؟\nسارا: به شمال رفتم. با خانواده به ساحل رفتیم.\nعلی: چه خوب! هوا چطور بود؟\nسارا: عالی بود. آفتابی و گرم. تو چه کردی؟\nعلی: من خانه بودم. کتاب خواندم و استراحت کردم.",
-                "exercises": [
-                    "Conjugate 10 common verbs in past tense",
-                    "Write about what you did yesterday",
-                    "Transform present tense sentences to past tense",
-                    "Answer: کجا بودید؟ چه کردید؟"
-                ],
-                "dialogueTranslit": "Talking about the weekend:\nAli: Aakhar-e hafte che kardi?\nSaara: Be shomaal raftam. Baa khanevadeh be saahel raftim.\nAli: Che khub! Havaa chetor bud?\nSaara: Ali bud. Aaftaabi va garm. To che kardi?\nAli: Man khaneh budam. Ketaab khaandam va esteraahat kardam."
-            },
-            "8": {
-                "title": "Weather and Seasons",
-                "vocabulary": [
-                    {"farsi": "هوا", "trans": "havaa", "english": "weather, air"},
-                    {"farsi": "آفتابی", "trans": "aaftaabi", "english": "sunny"},
-                    {"farsi": "ابری", "trans": "abri", "english": "cloudy"},
-                    {"farsi": "بارانی", "trans": "baaraani", "english": "rainy"},
-                    {"farsi": "برفی", "trans": "barfi", "english": "snowy"},
-                    {"farsi": "گرم", "trans": "garm", "english": "hot, warm"},
-                    {"farsi": "سرد", "trans": "sard", "english": "cold"},
-                    {"farsi": "بهار", "trans": "bahaar", "english": "spring"},
-                    {"farsi": "تابستان", "trans": "taabestaan", "english": "summer"},
-                    {"farsi": "پاییز", "trans": "paa'iz", "english": "autumn"},
-                    {"farsi": "زمستان", "trans": "zemestaan", "english": "winter"}
-                ],
-                "phrases": [
-                    {"farsi": "هوا چطور است؟", "trans": "havaa chetor ast?", "english": "How is the weather?"},
-                    {"farsi": "امروز هوا سرد است", "trans": "emrooz havaa sard ast", "english": "Today the weather is cold"},
-                    {"farsi": "باران می‌بارد", "trans": "baaraan mibaarad", "english": "It's raining"},
-                    {"farsi": "برف می‌بارد", "trans": "barf mibaarad", "english": "It's snowing"}
-                ],
-                "grammar": "Weather expressions and impersonal constructions. Describing seasons and climate. Temperature and weather conditions. Present progressive for weather: می‌بارد (is falling/raining).",
-                "dialogue": "Discussing the weather:\nمریم: هوا امروز چطور است؟\nرضا: خیلی سرد است و ابری است.\nمریم: فکر می‌کنی برف می‌بارد؟\nرضا: بله، احتمالاً امشب برف می‌بارد.\nمریم: من بهار را دوست دارم. هوا ملایم است.\nرضا: من هم. بهار بهترین فصل سال است.",
-                "exercises": [
-                    "Describe the weather in all four seasons",
-                    "Learn weather vocabulary and practice describing today's weather",
-                    "Compare different seasons using comparative forms",
-                    "Write: Which season do you like? Why?"
-                ],
-                "dialogueTranslit": "Discussing the weather:\nMaryam: Havaa emrooz chetor ast?\nRezaa: Kheyli sard ast va abri ast.\nMaryam: Fekr mikoni barf mibaraad?\nRezaa: Baleh, ehtemaalanaman emshab barf mibaraad.\nMaryam: Man bahaar raa doost daaram. Havaa molaa'yem ast.\nRezaa: Man ham. Bahaar behtarin fasl-e saal ast."
-            },
-            "9": {
-                "title": "Health and Body",
-                "vocabulary": [
-                    {"farsi": "سلامتی", "trans": "salaamati", "english": "health"},
-                    {"farsi": "مریض", "trans": "mariz", "english": "sick, ill"},
-                    {"farsi": "درد", "trans": "dard", "english": "pain, ache"},
-                    {"farsi": "سر", "trans": "sar", "english": "head"},
-                    {"farsi": "دل", "trans": "del", "english": "stomach"},
-                    {"farsi": "گلو", "trans": "galu", "english": "throat"},
-                    {"farsi": "دست", "trans": "dast", "english": "hand, arm"},
-                    {"farsi": "پا", "trans": "paa", "english": "foot, leg"},
-                    {"farsi": "چشم", "trans": "cheshm", "english": "eye"},
-                    {"farsi": "دکتر", "trans": "doktor", "english": "doctor"},
-                    {"farsi": "داروخانه", "trans": "daarukhaane", "english": "pharmacy"},
-                    {"farsi": "دارو", "trans": "daaru", "english": "medicine"}
-                ],
-                "phrases": [
-                    {"farsi": "حالت چطور است؟", "trans": "haalat chetor ast?", "english": "How do you feel?"},
-                    {"farsi": "سرم درد می‌کند", "trans": "saram dard mikonad", "english": "My head hurts / I have a headache"},
-                    {"farsi": "مریض هستم", "trans": "mariz hastam", "english": "I am sick"},
-                    {"farsi": "باید به دکتر بروم", "trans": "baayad be doktor beravam", "english": "I should go to the doctor"}
-                ],
-                "grammar": "Body parts vocabulary. Expressing pain and illness: درد کردن (to hurt). Modal verb باید (must, should). Health-related expressions and visiting the doctor.",
-                "dialogue": "At the doctor:\nدکتر: حالتان چطور است؟\nبیمار: خیلی خوب نیستم. سرم درد می‌کند و تب دارم.\nدکتر: از کی این‌طور هستید؟\nبیمار: از دو روز پیش.\nدکتر: باشد. سرماخوردگی است. این دارو را بخورید.\nبیمار: چند بار در روز؟\nدکتر: سه بار، بعد از غذا.",
-                "exercises": [
-                    "Learn names of body parts in Farsi",
-                    "Practice saying: [body part] درد می‌کند",
-                    "Write a dialogue at the doctor's office",
-                    "Describe symptoms of common illnesses"
-                ],
-                "dialogueTranslit": "At the doctor:\nDoktor: Haal-etaan chetor ast?\nBimaar: Kheyli khub nistam. Saram dard mikonad va tab daaram.\nDoktor: Az kay intor hastid?\nBimaar: Az do rooz pish.\nDoktor: Baasheh. Sarmaa-khordegi ast. In daaroo raa bekhorid.\nBimaar: Chand baar dar rooz?\nDoktor: Se baar, ba'd az ghazaa."
-            },
-            "10": {
-                "title": "Travel and Transportation",
-                "vocabulary": [
-                    {"farsi": "سفر", "trans": "safar", "english": "travel, trip"},
-                    {"farsi": "مسافرت", "trans": "mosaaferat", "english": "journey"},
-                    {"farsi": "هواپیما", "trans": "havaapeymaa", "english": "airplane"},
-                    {"farsi": "قطار", "trans": "ghataar", "english": "train"},
-                    {"farsi": "اتوبوس", "trans": "otobus", "english": "bus"},
-                    {"farsi": "تاکسی", "trans": "taaksi", "english": "taxi"},
-                    {"farsi": "مترو", "trans": "metro", "english": "metro, subway"},
-                    {"farsi": "ایستگاه", "trans": "istgaah", "english": "station"},
-                    {"farsi": "فرودگاه", "trans": "forudgaah", "english": "airport"},
-                    {"farsi": "بلیط", "trans": "belit", "english": "ticket"},
-                    {"farsi": "چمدان", "trans": "chamedaan", "english": "suitcase"}
-                ],
-                "phrases": [
-                    {"farsi": "کجا می‌روید؟", "trans": "kojaa miravid?", "english": "Where are you going?"},
-                    {"farsi": "به اصفهان می‌روم", "trans": "be esfahaan miravam", "english": "I'm going to Isfahan"},
-                    {"farsi": "با چه وسیله‌ای؟", "trans": "baa che vasile-i?", "english": "By what means? / How?"},
-                    {"farsi": "یک بلیط به تهران", "trans": "yek belit be tehraan", "english": "One ticket to Tehran"}
-                ],
-                "grammar": "Transportation vocabulary. Asking about and describing travel plans. Prepositions of movement: به (to), از (from). Future constructions with می‌روم (I'm going / I will go).",
-                "dialogue": "At the station:\nمسافر: ببخشید، قطار بعدی به شیراز کی حرکت می‌کند؟\nمأمور: ساعت سه بعدازظهر.\nمسافر: یک بلیط لطفاً.\nمأمور: یک طرفه یا رفت و برگشت؟\nمسافر: رفت و برگشت.\nمأمور: بفرمایید. سی و پنج ایستگاه است.",
-                "exercises": [
-                    "Learn transportation vocabulary",
-                    "Practice buying tickets and asking about schedules",
-                    "Describe your last trip or journey",
-                    "Write: Where would you like to travel? How would you get there?"
-                ],
-                "dialogueTranslit": "At the station:\nMosaafer: Bebakhshid, ghataar-e ba'di be Shiraaz key harekat mikonad?\nMa'moor: Saa'at se ba'd az zohr.\nMosaafer: Yek belit lotfan.\nMa'moor: Yek tarafe yaa raft va bargasht?\nMosaafer: Raft va bargasht.\nMa'moor: Befarmaa'id. Si va panj istgaah ast."
-            },
-            "11": {
-                "title": "Future Plans and Intentions",
-                "vocabulary": [
-                    {"farsi": "فردا", "trans": "fardaa", "english": "tomorrow"},
-                    {"farsi": "پس‌فردا", "trans": "pasfardaa", "english": "day after tomorrow"},
-                    {"farsi": "هفته آینده", "trans": "hafte-ye aayande", "english": "next week"},
-                    {"farsi": "ماه آینده", "trans": "maah-e aayande", "english": "next month"},
-                    {"farsi": "سال آینده", "trans": "saal-e aayande", "english": "next year"},
-                    {"farsi": "برنامه", "trans": "barnaame", "english": "plan, program"},
-                    {"farsi": "قصد", "trans": "ghasd", "english": "intention"},
-                    {"farsi": "می‌خواهم", "trans": "mikhaham", "english": "I want"},
-                    {"farsi": "خواهم رفت", "trans": "khaham raft", "english": "I will go"},
-                    {"farsi": "امیدوارم", "trans": "omidvaaram", "english": "I hope"}
-                ],
-                "phrases": [
-                    {"farsi": "فردا چه کار می‌کنید؟", "trans": "fardaa che kaar mikonid?", "english": "What will you do tomorrow?"},
-                    {"farsi": "می‌خواهم به پارک بروم", "trans": "mikhaham be paark beravam", "english": "I want to go to the park"},
-                    {"farsi": "قصد دارم سفر کنم", "trans": "ghasd daaram safar konam", "english": "I intend to travel"},
-                    {"farsi": "امیدوارم هوا خوب باشد", "trans": "omidvaaram havaa khub baashad", "english": "I hope the weather will be good"}
-                ],
-                "grammar": "Future tense formation: خواهم + verb stem (formal future). Expressing intentions: می‌خواهم + subjunctive, قصد دارم + subjunctive. Making plans and predictions. Time expressions for future.",
-                "dialogue": "Making weekend plans:\nسارا: آخر هفته چه برنامه‌ای داری؟\nرضا: می‌خواهم به کوه بروم. تو چطور؟\nسارا: هنوز نمی‌دانم. شاید خانه بمانم.\nرضا: می‌خواهی با ما بیایی؟\nسارا: چه وقت می‌روید؟\nرضا: صبح زود، ساعت شش.\nسارا: باشد، می‌آیم. امیدوارم هوا خوب باشد!",
-                "exercises": [
-                    "Form future tense with خواهم + 10 verbs",
-                    "Write about your plans for next week",
-                    "Practice: می‌خواهم + subjunctive constructions",
-                    "Make predictions using future tense"
-                ],
-                "dialogueTranslit": "Making weekend plans:\nSaara: Aakhar-e hafte che barnaameh-ee daari?\nRezaa: Mikhaaham be kooh beravam. To chetor?\nSaara: Hanooz nemidaanam. Shaayad khaneh bemaanam.\nRezaa: Mikhaahi baa maa biyaayi?\nSaara: Che vaght mirid?\nRezaa: Sobh-e zood, saa'at shesh.\nSaara: Baasheh, miyaayam. Omidvaaram havaa khub baashad!"
-            },
-            "12": {
-                "title": "Culture and Celebrations",
-                "vocabulary": [
-                    {"farsi": "عید", "trans": "eid", "english": "celebration, holiday"},
-                    {"farsi": "نوروز", "trans": "nowruz", "english": "Persian New Year"},
-                    {"farsi": "جشن", "trans": "jashn", "english": "party, celebration"},
-                    {"farsi": "سنت", "trans": "sonnat", "english": "tradition"},
-                    {"farsi": "فرهنگ", "trans": "farhang", "english": "culture"},
-                    {"farsi": "هدیه", "trans": "hadiye", "english": "gift, present"},
-                    {"farsi": "مهمانی", "trans": "mehmani", "english": "party, gathering"},
-                    {"farsi": "مهمان", "trans": "mehmaan", "english": "guest"},
-                    {"farsi": "میزبان", "trans": "mizbaan", "english": "host"},
-                    {"farsi": "تعارف", "trans": "ta'aarof", "english": "Persian courtesy/politeness system"},
-                    {"farsi": "سفره", "trans": "sofre", "english": "tablecloth, spread"}
-                ],
-                "phrases": [
-                    {"farsi": "عید شما مبارک", "trans": "eid-e shomaa mobarak", "english": "Happy holiday (to you)"},
-                    {"farsi": "سال نو مبارک", "trans": "saal-e no mobarak", "english": "Happy New Year"},
-                    {"farsi": "دعوت می‌کنم", "trans": "da'vat mikonam", "english": "I invite (you)"},
-                    {"farsi": "خواهش می‌کنم بفرمایید", "trans": "khaahesh mikonam befarmaa'id", "english": "Please, help yourself"}
-                ],
-                "grammar": "Cultural vocabulary and expressions. Ta'arof and Persian politeness conventions. Celebration and hospitality language. Giving and receiving invitations. Cultural customs and traditions.",
-                "dialogue": "Nowruz celebration:\nمریم: سال نو مبارک!\nعلی: سال نو شما هم مبارک! عید شما خجسته!\nمریم: ممنون. سفره هفت‌سین را چیدید؟\nعلی: بله، امروز صبح با خانواده چیدیم.\nمریم: چه خوب! امشب مهمانی دارید؟\nعلی: بله، خانواده و دوستان می‌آیند. شما هم دعوتید!\nمریم: خیلی ممنون. حتماً می‌آیم.",
-                "exercises": [
-                    "Learn about Nowruz and Persian celebrations",
-                    "Practice ta'arof expressions and polite phrases",
-                    "Write about a celebration or party you attended",
-                    "Describe Persian New Year traditions"
-                ],
-                "dialogueTranslit": "Nowruz celebration:\nMaryam: Saal-e no mobarak!\nAli: Saal-e no-ye shomaa ham mobarak! Eyd-e shomaa khojasteh!\nMaryam: Mamnun. Sofreh-ye haft-sin raa chidid?\nAli: Baleh, emrooz sobh baa khanevadeh chidim.\nMaryam: Che khub! Emshab mehmuni daarid?\nAli: Baleh, khanevadeh va dostaan miyaayand. Shomaa ham da'vatid!\nMaryam: Kheyli mamnun. Hatman miyaayam."
-            },
-            "13": {
-                "title": "Work and Professions",
-                "vocabulary": [
-                    {"farsi": "کار", "trans": "kaar", "english": "work, job"},
-                    {"farsi": "شغل", "trans": "shogl", "english": "profession, occupation"},
-                    {"farsi": "مهندس", "trans": "mohandes", "english": "engineer"},
-                    {"farsi": "پزشک", "trans": "pezeshk", "english": "doctor"},
-                    {"farsi": "معلم", "trans": "mo'allem", "english": "teacher"},
-                    {"farsi": "دانشجو", "trans": "daneshju", "english": "student"},
-                    {"farsi": "دفتر", "trans": "daftar", "english": "office"},
-                    {"farsi": "شرکت", "trans": "sherkat", "english": "company"},
-                    {"farsi": "حقوق", "trans": "hoghogh", "english": "salary"},
-                    {"farsi": "استخدام", "trans": "estekhdam", "english": "employment, hiring"}
-                ],
-                "phrases": [
-                    {"farsi": "چه کار می‌کنید؟", "trans": "che kaar mikonid?", "english": "What do you do? (profession)"},
-                    {"farsi": "کجا کار می‌کنید؟", "trans": "kojaa kaar mikonid?", "english": "Where do you work?"},
-                    {"farsi": "من معلم هستم", "trans": "man mo'allem hastam", "english": "I am a teacher"},
-                    {"farsi": "چند ساعت در روز کار می‌کنید؟", "trans": "chand saa'at dar rooz kaar mikonid?", "english": "How many hours a day do you work?"}
-                ],
-                "grammar": "Professional vocabulary and workplace terms. Using compound verbs: کار کردن (to work), درس خواندن (to study). Describing occupations with هستن (to be). Time expressions related to work schedule.",
-                "dialogue": "At a networking event:\nعلی: سلام، من علی هستم. چه کار می‌کنید؟\nمریم: سلام، من مریم هستم. من مهندس نرم‌افزار هستم. شما چطور؟\nعلی: من معلم زبان انگلیسی هستم.\nمریم: جالبه! کجا کار می‌کنید؟\nعلی: در یک دبیرستان خصوصی.",
-                "dialogueTranslit": "At a networking event:\nAli: Salaam, man Ali hastam. Che kaar mikonid?\nMaryam: Salaam, man Maryam hastam. Man mohandess-e narm-afzaar hastam. Shomaa chetor?\nAli: Man mo'allem-e zabaan-e englisi hastam.\nMaryam: Jaaleb-eh! Kojaa kaar mikonid?\nAli: Dar yek dabirestaan-e khosusi.",
-                "exercises": [
-                    "Learn 15 common professions in Farsi",
-                    "Practice asking and answering about jobs",
-                    "Write about your profession or studies",
-                    "Describe your typical work day"
-                ]
-            },
-            "14": {
-                "title": "Hobbies and Leisure",
-                "vocabulary": [
-                    {"farsi": "سرگرمی", "trans": "sargarmi", "english": "hobby, pastime"},
-                    {"farsi": "ورزش", "trans": "varzesh", "english": "sport, exercise"},
-                    {"farsi": "فیلم", "trans": "film", "english": "movie, film"},
-                    {"farsi": "کتاب", "trans": "ketaab", "english": "book"},
-                    {"farsi": "موسیقی", "trans": "moosighi", "english": "music"},
-                    {"farsi": "نقاشی", "trans": "naghhaashi", "english": "painting"},
-                    {"farsi": "شنا", "trans": "shenaa", "english": "swimming"},
-                    {"farsi": "فوتبال", "trans": "footbaal", "english": "football, soccer"},
-                    {"farsi": "دوست داشتن", "trans": "doost daashtan", "english": "to like, to love"},
-                    {"farsi": "بازی کردن", "trans": "baazi kardan", "english": "to play (games)"}
-                ],
-                "phrases": [
-                    {"farsi": "سرگرمی شما چیست؟", "trans": "sargarmi-ye shomaa chist?", "english": "What is your hobby?"},
-                    {"farsi": "دوست دارم کتاب بخوانم", "trans": "doost daaram ketaab bekhaanam", "english": "I like to read books"},
-                    {"farsi": "چه ورزشی انجام می‌دهید؟", "trans": "che varzeshi anjaam midahid?", "english": "What sport do you do?"},
-                    {"farsi": "وقت آزاد خود را چگونه می‌گذرانید؟", "trans": "vaght-e aazaad-e khod raa chegoneh migodhraanid?", "english": "How do you spend your free time?"}
-                ],
-                "grammar": "Expressing preferences with دوست داشتن (to like). Compound verbs for activities. Using present tense for habitual actions. Leisure vocabulary and cultural activities in Iran.",
-                "dialogue": "Discussing hobbies:\nسارا: در وقت آزاد چه کار می‌کنی؟\nرضا: معمولاً کتاب می‌خوانم یا موسیقی گوش می‌دهم. تو چطور؟\nسارا: من دوست دارم ورزش کنم. دو بار در هفته به باشگاه می‌روم.\nرضا: چه ورزشی؟\nسارا: شنا و یوگا. خیلی لذت می‌برم.",
-                "dialogueTranslit": "Discussing hobbies:\nSaara: Dar vaght-e aazaad che kaar mikoni?\nRezaa: Ma'molan ketaab mikhaanam yaa moosighi goosh midaham. To chetor?\nSaara: Man doost daaram varzesh konam. Do baar dar hafte be baashgaah miram.\nRezaa: Che varzeshi?\nSaara: Shenaa va yogaa. Kheyli lezzat mibar am.",
-                "exercises": [
-                    "List 10 hobbies and activities in Farsi",
-                    "Write about your favorite hobby",
-                    "Practice expressing likes and dislikes",
-                    "Describe what you do in your free time"
-                ]
-            },
-            "15": {
-                "title": "Review and Conversation",
-                "vocabulary": [
-                    {"farsi": "صحبت کردن", "trans": "sohbat kardan", "english": "to talk, to converse"},
-                    {"farsi": "یاد گرفتن", "trans": "yaad gereftan", "english": "to learn"},
-                    {"farsi": "تمرین کردن", "trans": "tamrin kardan", "english": "to practice"},
-                    {"farsi": "فهمیدن", "trans": "fahmidan", "english": "to understand"},
-                    {"farsi": "گفتگو", "trans": "goftegu", "english": "conversation, dialogue"},
-                    {"farsi": "سؤال", "trans": "so'aal", "english": "question"},
-                    {"farsi": "جواب", "trans": "javaab", "english": "answer"},
-                    {"farsi": "لهجه", "trans": "lahje", "english": "accent, dialect"},
-                    {"farsi": "روان", "trans": "ravaan", "english": "fluent"},
-                    {"farsi": "پیشرفت", "trans": "pishraft", "english": "progress"}
-                ],
-                "phrases": [
-                    {"farsi": "فارسی شما خیلی خوب است", "trans": "faarsi-ye shomaa kheyli khub ast", "english": "Your Persian is very good"},
-                    {"farsi": "می‌توانید آهسته‌تر صحبت کنید؟", "trans": "mitavaanid aaheste-tar sohbat konid?", "english": "Can you speak more slowly?"},
-                    {"farsi": "این را متوجه نمی‌شوم", "trans": "in raa motavajjeh nemishavam", "english": "I don't understand this"},
-                    {"farsi": "چگونه باید این را بگویم؟", "trans": "chegoneh baayad in raa beguyam?", "english": "How should I say this?"}
-                ],
-                "grammar": "Comprehensive review of all previous grammar points. Complex sentence structures. Polite conversation techniques. Modal verbs and ability expressions. Review of all tenses: past, present, future.",
-                "dialogue": "Language learning conversation:\nمعلم: امروز همه چیزهایی که یاد گرفتیم را مرور می‌کنیم.\nدانشجو: عالیه! من می‌خواهم بیشتر تمرین کنم.\nمعلم: فارسی شما خیلی پیشرفت کرده است.\nدانشجو: متشکرم! اما هنوز مشکل دارم با لهجه.\nمعلم: نگران نباشید. با تمرین بهتر می‌شود.\nدانشجو: چه چیزی باید تمرین کنم؟\nمعلم: هر روز کمی فارسی صحبت کنید و گوش دهید.",
-                "dialogueTranslit": "Language learning conversation:\nMo'allem: Emrooz hame chizhaa-yi ke yaad gereftim raa moror mikonim.\nDaaneshjoo: Ali-yeh! Man mikhaaham bishtar tamrin konam.\nMo'allem: Faarsi-ye shomaa kheyli pishraft kardeh ast.\nDaaneshjoo: Moteshakkeram! Ammaa hanooz moshkel daaram baa lahje.\nMo'allem: Negaraan nabaashid. Baa tamrin behtar mishavad.\nDaaneshjoo: Che chizi baayad tamrin konam?\nMo'allem: Har rooz kami faarsi sohbat konid va goosh dahid.",
-                "exercises": [
-                    "Have a 5-minute conversation entirely in Farsi",
-                    "Review all vocabulary from lessons 1-14",
-                    "Write a short essay about your Farsi learning journey",
-                    "Practice all verb tenses with different subjects",
-                    "Role-play various real-life situations in Farsi"
-                ]
-            }
-        };
+    // --- RENDER UNIT ---
+    function renderUnit(unit) {
+        backBtn.classList.remove('hidden');
+        pageTitle.innerText = `Unit ${unit.unit_id}`;
+        contentArea.innerHTML = '';
+        contentArea.scrollTop = 0;
 
-        // App state
-        let currentLesson = 1;
-        let completedLessons = [];
-        let currentFlashcardIndex = 0;
-        const totalLessons = 15;
+        if (!unit.content_sequence) return;
 
-        // Toggle dialogue transliteration
-        function toggleDialogueTransliteration(lessonNum) {
-            const translitDiv = document.getElementById(`dialogue-transliteration-${lessonNum}`);
-            if (translitDiv) {
-                if (translitDiv.style.display === 'none') {
-                    translitDiv.style.display = 'block';
-                } else {
-                    translitDiv.style.display = 'none';
-                }
-            }
-        }
-
-        // Load progress
-        async function loadProgress() {
-            try {
-                const result = await window.storage.get('farsi-progress');
-                if (result && result.value) {
-                    const data = JSON.parse(result.value);
-                    currentLesson = data.currentLesson || 1;
-                    completedLessons = data.completedLessons || [];
-                }
-            } catch (e) {
-                console.log('No saved progress');
-            }
-            updateProgressDisplay();
-        }
-
-        // Save progress
-        async function saveProgress() {
-            try {
-                await window.storage.set('farsi-progress', JSON.stringify({
-                    currentLesson,
-                    completedLessons
-                }));
-            } catch (e) {
-                console.error('Save failed:', e);
-            }
-        }
-
-        // Update progress display
-        function updateProgressDisplay() {
-            const completed = completedLessons.length;
-            const percentage = (completed / totalLessons) * 100;
-            document.getElementById('progressFill').style.width = percentage + '%';
-            document.getElementById('progressText').textContent = `${completed} of ${totalLessons} lessons completed`;
-        }
-
-        // Initialize lesson grid
-        function initLessonGrid() {
-            const grid = document.getElementById('lessonGrid');
-            grid.innerHTML = '';
+        unit.content_sequence.forEach((section, idx) => {
+            const secId = `s-${idx}`;
             
-            // Display by units
-            for (let unitNum = 1; unitNum <= 5; unitNum++) {
-                const unit = UNITS[unitNum];
-                
-                // Add unit header
-                const unitHeader = document.createElement('div');
-                unitHeader.style.gridColumn = '1 / -1';
-                unitHeader.style.marginTop = unitNum > 1 ? '30px' : '10px';
-                unitHeader.style.marginBottom = '15px';
-                unitHeader.innerHTML = `
-                    <h3 style="color: #667eea; margin: 0; font-size: 1.1em;">${unit.name}</h3>
-                    <p style="color: #666; font-size: 0.9em; margin: 5px 0 0 0;">${unit.description}</p>
-                `;
-                grid.appendChild(unitHeader);
-                
-                // Add lesson cards for this unit
-                unit.lessons.forEach(i => {
-                    const card = document.createElement('div');
-                    card.className = 'lesson-card';
-                    
-                    if (completedLessons.includes(i)) {
-                        card.classList.add('completed');
-                    }
-                    if (i === currentLesson) {
-                        card.classList.add('current');
-                    }
-                    
-                    const lesson = TEXTBOOK_DATA[i.toString()];
-                    card.innerHTML = `
-                        <div class="lesson-number">Lesson ${i}</div>
-                        <div class="lesson-status">${completedLessons.includes(i) ? '✓ Done' : i === currentLesson ? 'Current' : 'Not started'}</div>
-                        <div style="font-size: 0.75em; margin-top: 5px;">${lesson.title}</div>
+            // Header
+            const header = document.createElement('div');
+            header.className = 'section-header';
+            header.innerText = section.title || section.type;
+            contentArea.appendChild(header);
+
+            const card = document.createElement('div');
+            card.className = 'card';
+
+            // 1. DIALOGUE
+            if (section.type === 'dialogue') {
+                if (section.context) {
+                    const ctx = document.createElement('div');
+                    ctx.className = 'context-box';
+                    ctx.innerText = section.context;
+                    card.appendChild(ctx);
+                }
+                section.lines.forEach(line => {
+                    const row = document.createElement('div');
+                    row.className = 'dialogue-row';
+                    row.innerHTML = `
+                        <div class="speaker">${line.speaker}</div>
+                        <div class="farsi">${line.farsi}</div>
+                        <div class="translit">${line.transliteration}</div>
+                        <div class="eng">${line.english}</div>
                     `;
-                    
-                    card.onclick = () => selectLesson(i);
-                    grid.appendChild(card);
+                    card.appendChild(row);
                 });
             }
-        }
 
-        // Select a lesson
-        function selectLesson(lessonNum) {
-            currentLesson = lessonNum;
-            saveProgress();
-            initLessonGrid();
-            
-            // Update displays
-            document.getElementById('readLessonNum').textContent = lessonNum;
-            document.getElementById('practiceLessonNum').textContent = lessonNum;
-            document.getElementById('flashcardsLessonNum').textContent = lessonNum;
-            document.getElementById('quizLessonNum').textContent = lessonNum;
-            
-            // Load content
-            loadLessonContent(lessonNum);
-            
-            // Switch to read tab
-            showTab('read');
-        }
-
-        // Show tab
-        function showTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            document.getElementById(tabName).classList.add('active');
-            
-            // Activate the corresponding button
-            const buttons = document.querySelectorAll('.tab-btn');
-            buttons.forEach(btn => {
-                if (btn.textContent.includes('Lessons') && tabName === 'lessons') btn.classList.add('active');
-                if (btn.textContent.includes('Read') && tabName === 'read') btn.classList.add('active');
-                if (btn.textContent.includes('Practice') && tabName === 'practice') btn.classList.add('active');
-                if (btn.textContent.includes('Flashcards') && tabName === 'flashcards') btn.classList.add('active');
-                if (btn.textContent.includes('Quiz') && tabName === 'quiz') btn.classList.add('active');
-            });
-            
-            // Load content for specific tabs
-            if (tabName === 'practice') {
-                loadPracticeExercises();
-            } else if (tabName === 'flashcards') {
-                loadFlashcards();
-            } else if (tabName === 'quiz') {
-                loadQuiz();
-            }
-        }
-
-        // Load lesson content
-        function loadLessonContent(lessonNum) {
-            const lesson = TEXTBOOK_DATA[lessonNum.toString()];
-            if (!lesson) return;
-            
-            document.getElementById('lessonTitle').textContent = lesson.title;
-            
-            let html = `
-                <div class="section">
-                    <h3>📚 Vocabulary</h3>
-                    <table class="vocab-table">
-                        <thead>
-                            <tr>
-                                <th>Farsi</th>
-                                <th>Transliteration</th>
-                                <th>English</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-            `;
-            
-            lesson.vocabulary.forEach(word => {
-                html += `
-                    <tr>
-                        <td class="farsi-text">${word.farsi}</td>
-                        <td>${word.trans}</td>
-                        <td>${word.english}</td>
-                    </tr>
-                `;
-            });
-            
-            html += `
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="section">
-                    <h3>💬 Common Phrases</h3>
-            `;
-            
-            lesson.phrases.forEach(phrase => {
-                html += `
-                    <div style="margin: 15px 0; padding: 15px; background: white; border-radius: 8px;">
-                        <div class="farsi-text" style="margin-bottom: 8px;">${phrase.farsi}</div>
-                        <div style="color: #666; font-size: 0.9em;">${phrase.trans}</div>
-                        <div style="font-weight: 600; margin-top: 5px;">${phrase.english}</div>
-                    </div>
-                `;
-            });
-            
-            html += `
-                </div>
-                
-                <div class="section">
-                    <h3>📖 Grammar Notes</h3>
-                    <p style="line-height: 1.8;">${lesson.grammar}</p>
-                </div>
-                
-                <div class="section">
-                    <h3>🗣️ Dialogue</h3>
-                    <div class="farsi-text" style="background: white; padding: 20px; border-radius: 8px; white-space: pre-line;">${lesson.dialogue}</div>
-                    <div style="margin-top: 15px;">
-                        <button class="btn" onclick="toggleDialogueTransliteration(${lessonNum})" style="background: #6c757d;">🔤 Show/Hide Transliteration</button>
-                    </div>
-                    <div id="dialogue-transliteration-${lessonNum}" style="display: none; margin-top: 15px; padding: 15px; background: #fff3cd; border-radius: 8px; border: 2px solid #ffc107;">
-                        <h4>Transliteration:</h4>
-                        <p style="line-height: 2; margin-top: 10px;">${lesson.dialogueTranslit || 'Transliteration not available'}</p>
-                    </div>
-                </div>
-                
-                <div class="section">
-                    <h3>✏️ Exercises</h3>
-                    <ol style="line-height: 2; margin-left: 20px;">
-            `;
-            
-            lesson.exercises.forEach(ex => {
-                html += `<li>${ex}</li>`;
-            });
-            
-            html += `
-                    </ol>
-                </div>
-                
-                <div class="section">
-                    <h3>✍️ Practice Exercises</h3>
-                    <p style="margin-bottom: 15px; color: #666;">Complete these exercises based on the lesson content:</p>
-            `;
-            
-            // Add interactive exercises
-            lesson.exercises.forEach((ex, idx) => {
-                html += `
-                    <div style="background: white; padding: 15px; border-radius: 8px; margin: 10px 0;">
-                        <p style="font-weight: 600; margin-bottom: 10px;">${idx + 1}. ${ex}</p>
-                        <textarea id="exercise${lessonNum}-${idx}" placeholder="Type your answer here..." style="width: 100%; min-height: 80px; padding: 10px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 1em;"></textarea>
-                        <div style="margin-top: 10px;">
-                            <button class="btn" onclick="saveExerciseAnswer(${lessonNum}, ${idx})">💾 Save Answer</button>
-                            <span id="save-status-${lessonNum}-${idx}" style="margin-left: 10px; color: #38ef7d; display: none;">✓ Saved!</span>
+            // 2. VOCABULARY
+            else if (section.type === 'vocabulary') {
+                section.items.forEach(item => {
+                    const row = document.createElement('div');
+                    row.className = 'vocab-row';
+                    row.innerHTML = `
+                        <div class="vocab-left">
+                            <div class="vocab-word">${item.transliteration}</div>
+                            <div class="vocab-def">${item.english}</div>
                         </div>
-                    </div>
-                `;
-            });
-            
-            // Add dialogue practice section
-            html += `
-                </div>
-                
-                <div class="section">
-                    <h3>🗣️ Dialogue Practice</h3>
-                    <p style="margin-bottom: 15px; color: #666;">Practice the dialogue by writing it out from memory, or create your own similar dialogue:</p>
-                    <textarea id="dialogue-practice-${lessonNum}" placeholder="Write the dialogue here in Farsi or create your own..." style="width: 100%; min-height: 150px; padding: 15px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 1.1em; direction: rtl;"></textarea>
-                    <div style="margin-top: 10px;">
-                        <button class="btn" onclick="saveDialoguePractice(${lessonNum})">💾 Save Dialogue Practice</button>
-                        <button class="btn" onclick="showDialogueReference(${lessonNum})" style="background: #6c757d;">👁️ Show Reference</button>
-                        <span id="dialogue-save-status-${lessonNum}" style="margin-left: 10px; color: #38ef7d; display: none;">✓ Saved!</span>
-                    </div>
-                    <div id="dialogue-reference-${lessonNum}" style="display: none; margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-                        <h4>Reference Dialogue:</h4>
-                        <div class="farsi-text" style="white-space: pre-line; margin-top: 10px;">${lesson.dialogue}</div>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('textbookContent').innerHTML = html;
-            
-            // Load any saved exercise answers and dialogue practice
-            setTimeout(() => {
-                loadExerciseAnswers(lessonNum);
-                loadDialoguePractice(lessonNum);
-            }, 100);
-        }
-
-        // Load practice exercises
-        function loadPracticeExercises() {
-            const lesson = TEXTBOOK_DATA[currentLesson.toString()];
-            if (!lesson) return;
-            
-            let html = `
-                <div class="info-box">
-                    Practice translating between English and Farsi. Type your answer and check it!
-                </div>
-            `;
-            
-            // Translation practice
-            const allItems = [...lesson.vocabulary, ...lesson.phrases];
-            const randomItems = allItems.sort(() => 0.5 - Math.random()).slice(0, 5);
-            
-            // Store the exercise data globally so we can access it from event handlers
-            window.currentExercises = randomItems.map((item, index) => {
-                const showFarsi = Math.random() > 0.5;
-                return {
-                    question: showFarsi ? item.farsi : item.english,
-                    answer: showFarsi ? item.english : item.farsi,
-                    showFarsi: showFarsi,
-                    lang: showFarsi ? 'en' : 'fa'
-                };
-            });
-            
-            window.currentExercises.forEach((exercise, index) => {
-                const questionHTML = exercise.showFarsi 
-                    ? `<span class="farsi-text">${exercise.question}</span>` 
-                    : exercise.question;
-                
-                html += `
-                    <div class="practice-card">
-                        <h4>Exercise ${index + 1}</h4>
-                        <p style="font-size: 1.2em; margin: 15px 0;">
-                            ${questionHTML}
-                        </p>
-                        <p style="color: #666; font-size: 0.9em;">Translate to ${exercise.showFarsi ? 'English' : 'Farsi'}:</p>
-                        <input type="text" id="answer${index}" placeholder="Your answer...">
-                        <button class="btn" data-exercise-index="${index}">Check Answer</button>
-                        <div id="feedback${index}"></div>
-                    </div>
-                `;
-            });
-            
-            document.getElementById('practiceArea').innerHTML = html;
-            
-            // Add event listeners to the check buttons
-            setTimeout(() => {
-                document.querySelectorAll('.practice-card .btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const index = parseInt(this.getAttribute('data-exercise-index'));
-                        const exercise = window.currentExercises[index];
-                        checkAnswer(index, exercise.answer, exercise.lang);
-                    });
-                });
-            }, 50);
-        }
-
-        // Check answer
-        function checkAnswer(index, correct, lang) {
-            const userAnswer = document.getElementById(`answer${index}`).value.trim().toLowerCase();
-            const correctAnswer = correct.toLowerCase();
-            const feedback = document.getElementById(`feedback${index}`);
-            
-            // Simple fuzzy matching
-            const isCorrect = userAnswer === correctAnswer || 
-                             correctAnswer.includes(userAnswer) || 
-                             userAnswer.includes(correctAnswer);
-            
-            if (isCorrect) {
-                feedback.className = 'answer-feedback correct';
-                feedback.innerHTML = `✓ Correct! ${lang === 'en' ? 'English' : 'Farsi'}: ${correct}`;
-            } else {
-                feedback.className = 'answer-feedback incorrect';
-                feedback.innerHTML = `✗ Not quite. Correct answer: ${correct}`;
-            }
-        }
-
-        // Load flashcards
-        function loadFlashcards() {
-            const lesson = TEXTBOOK_DATA[currentLesson.toString()];
-            if (!lesson) return;
-            
-            currentFlashcardIndex = 0;
-            displayFlashcard();
-        }
-
-        // Display flashcard
-        function displayFlashcard() {
-            const lesson = TEXTBOOK_DATA[currentLesson.toString()];
-            const vocab = lesson.vocabulary;
-            
-            if (currentFlashcardIndex >= vocab.length) {
-                currentFlashcardIndex = 0;
-            }
-            
-            const word = vocab[currentFlashcardIndex];
-            
-            let html = `
-                <div class="info-box">
-                    Click the card to flip it. Use the buttons to navigate.
-                </div>
-                <div class="flashcard" onclick="this.classList.toggle('flipped')">
-                    <div class="flashcard-front farsi-text">${word.farsi}</div>
-                    <div class="flashcard-back">
-                        <div style="font-size: 1.2em; color: #667eea; margin-bottom: 10px;">${word.trans}</div>
-                        <div style="font-size: 1.5em;">${word.english}</div>
-                    </div>
-                </div>
-                <div style="text-align: center; margin-top: 20px;">
-                    <button class="btn" onclick="previousFlashcard()">← Previous</button>
-                    <span style="margin: 0 20px; font-weight: 600;">${currentFlashcardIndex + 1} / ${vocab.length}</span>
-                    <button class="btn" onclick="nextFlashcard()">Next →</button>
-                </div>
-            `;
-            
-            document.getElementById('flashcardsArea').innerHTML = html;
-        }
-
-        function nextFlashcard() {
-            const lesson = TEXTBOOK_DATA[currentLesson.toString()];
-            currentFlashcardIndex = (currentFlashcardIndex + 1) % lesson.vocabulary.length;
-            displayFlashcard();
-        }
-
-        function previousFlashcard() {
-            const lesson = TEXTBOOK_DATA[currentLesson.toString()];
-            currentFlashcardIndex = currentFlashcardIndex === 0 ? lesson.vocabulary.length - 1 : currentFlashcardIndex - 1;
-            displayFlashcard();
-        }
-
-        // Load quiz
-        function loadQuiz() {
-            const lesson = TEXTBOOK_DATA[currentLesson.toString()];
-            if (!lesson) return;
-            
-            const vocab = lesson.vocabulary;
-            const numQuestions = Math.min(5, vocab.length);
-            const questions = [...vocab].sort(() => 0.5 - Math.random()).slice(0, numQuestions);
-            
-            let html = `
-                <div class="info-box">
-                    Select the correct English translation for each Farsi word.
-                </div>
-            `;
-            
-            questions.forEach((q, qIndex) => {
-                // Generate unique wrong answers
-                const wrongAnswers = vocab
-                    .filter(v => v.english !== q.english)
-                    .sort(() => 0.5 - Math.random())
-                    .slice(0, 3)
-                    .map(v => v.english);
-                
-                // Ensure we have exactly 4 unique options
-                const allOptions = [q.english, ...wrongAnswers];
-                const uniqueOptions = [...new Set(allOptions)].slice(0, 4);
-                
-                // Shuffle options
-                const options = uniqueOptions.sort(() => 0.5 - Math.random());
-                
-                html += `
-                    <div class="practice-card">
-                        <h4>Question ${qIndex + 1}</h4>
-                        <p class="farsi-text" style="font-size: 1.8em; margin: 20px 0;">${q.farsi}</p>
-                        <p style="color: #666;">Transliteration: ${q.trans}</p>
-                        <div style="margin-top: 15px;" id="quiz-question-${qIndex}">
-                `;
-                
-                options.forEach((opt, oIndex) => {
-                    // Use data attributes instead of onclick with string parameters
-                    html += `
-                        <div class="quiz-option" data-question="${qIndex}" data-answer="${opt}" data-correct="${q.english}">
-                            ${String.fromCharCode(65 + oIndex)}) ${opt}
-                        </div>
+                        <div class="vocab-farsi">${item.farsi}</div>
                     `;
-                });
-                
-                html += `
-                        </div>
-                    </div>
-                `;
-            });
-            
-            html += `<button class="btn btn-success" style="width: 100%; margin-top: 20px;" onclick="loadQuiz()">🔄 New Quiz</button>`;
-            
-            document.getElementById('quizArea').innerHTML = html;
-            
-            // Add click listeners to quiz options
-            setTimeout(() => {
-                document.querySelectorAll('.quiz-option').forEach(option => {
-                    option.addEventListener('click', function() {
-                        const questionIndex = this.getAttribute('data-question');
-                        const selected = this.getAttribute('data-answer');
-                        const correct = this.getAttribute('data-correct');
-                        handleQuizOptionClick(questionIndex, this, selected, correct);
-                    });
-                });
-            }, 50);
-        }
-
-        // Handle quiz option click
-        function handleQuizOptionClick(questionIndex, element, selected, correct) {
-            const parent = element.parentElement;
-            const options = parent.querySelectorAll('.quiz-option');
-            
-            // Disable all options after selection
-            options.forEach(opt => {
-                opt.style.pointerEvents = 'none';
-                opt.style.cursor = 'default';
-            });
-            
-            // Remove previous selections
-            options.forEach(opt => {
-                opt.classList.remove('correct', 'incorrect');
-            });
-            
-            // Mark correct/incorrect
-            if (selected === correct) {
-                element.classList.add('correct');
-            } else {
-                element.classList.add('incorrect');
-                // Show correct answer
-                options.forEach(opt => {
-                    const optAnswer = opt.getAttribute('data-answer');
-                    if (optAnswer === correct) {
-                        opt.classList.add('correct');
-                    }
+                    card.appendChild(row);
                 });
             }
-        }
 
-        // Mark lesson complete
-        function markLessonComplete() {
-            if (!completedLessons.includes(currentLesson)) {
-                completedLessons.push(currentLesson);
-                saveProgress();
-                updateProgressDisplay();
-                initLessonGrid();
-                alert(`✅ Lesson ${currentLesson} marked as complete! Great job! 🎉`);
-                
-                // Move to next lesson if available
-                if (currentLesson < totalLessons) {
-                    if (confirm(`Move to Lesson ${currentLesson + 1}?`)) {
-                        selectLesson(currentLesson + 1);
-                    }
-                }
-            } else {
-                alert('This lesson is already marked as complete!');
-            }
-        }
+            // 3. TEACHING (Grammar/Culture)
+            else if (section.type === 'teaching') {
+                const box = document.createElement('div');
+                box.className = 'teaching-block';
 
-        // Save exercise answer
-        async function saveExerciseAnswer(lessonNum, exerciseIdx) {
-            const textarea = document.getElementById(`exercise${lessonNum}-${exerciseIdx}`);
-            const answer = textarea.value;
-            const statusSpan = document.getElementById(`save-status-${lessonNum}-${exerciseIdx}`);
-            
-            try {
-                await window.storage.set(`exercise-${lessonNum}-${exerciseIdx}`, answer);
-                statusSpan.style.display = 'inline';
-                setTimeout(() => {
-                    statusSpan.style.display = 'none';
-                }, 2000);
-            } catch (e) {
-                alert('Could not save answer. Please try again.');
-            }
-        }
+                if (section.introduction) box.innerHTML += `<div class="teaching-text">${section.introduction}</div>`;
+                if (section.content) box.innerHTML += `<div class="teaching-text">${section.content}</div>`;
 
-        // Load saved exercise answers
-        async function loadExerciseAnswers(lessonNum) {
-            const lesson = TEXTBOOK_DATA[lessonNum.toString()];
-            if (!lesson) return;
-            
-            for (let i = 0; i < lesson.exercises.length; i++) {
-                try {
-                    const result = await window.storage.get(`exercise-${lessonNum}-${i}`);
-                    if (result && result.value) {
-                        const textarea = document.getElementById(`exercise${lessonNum}-${i}`);
-                        if (textarea) {
-                            textarea.value = result.value;
+                if (section.grammar_points) {
+                    section.grammar_points.forEach(pt => {
+                        const ptDiv = document.createElement('div');
+                        ptDiv.className = 'grammar-point';
+                        if (pt.rule) ptDiv.innerHTML += `<span class="gp-title">${pt.rule}</span>`;
+                        if (pt.content) ptDiv.innerHTML += `<div class="teaching-text" style="font-size:14px;">${pt.content}</div>`;
+
+                        // Examples
+                        if (pt.examples) {
+                            pt.examples.forEach(ex => {
+                                let html = `<div class="example-box">`;
+                                if (ex.type === 'Statement' || ex.type === 'Question') {
+                                    html += `<div style="font-size:11px;font-weight:bold;color:#888;margin-bottom:2px;">${ex.type}</div>`;
+                                }
+                                if (ex.farsi) html += `<div class="farsi" style="font-size:17px;">${ex.farsi}</div>`;
+                                html += `<div class="example-meta">
+                                    <span style="font-weight:600;color:#333;">${ex.transliteration || ''}</span> 
+                                    ${ex.english ? ` - ${ex.english}` : ''}
+                                </div></div>`;
+                                ptDiv.innerHTML += html;
+                            });
                         }
-                    }
-                } catch (e) {
-                    // No saved answer
+
+                        // Tables
+                        if (pt.table) {
+                            let tbl = `<table class="g-table">`;
+                            pt.table.forEach(r => {
+                                tbl += `<tr><td class="farsi">${r.farsi}</td><td><b>${r.translit}</b><br>${r.eng}</td></tr>`;
+                            });
+                            tbl += `</table>`;
+                            ptDiv.innerHTML += tbl;
+                        }
+                        box.appendChild(ptDiv);
+                    });
                 }
-            }
-        }
 
-        // Save dialogue practice
-        async function saveDialoguePractice(lessonNum) {
-            const textarea = document.getElementById(`dialogue-practice-${lessonNum}`);
-            const practice = textarea.value;
-            const statusSpan = document.getElementById(`dialogue-save-status-${lessonNum}`);
-            
-            try {
-                await window.storage.set(`dialogue-practice-${lessonNum}`, practice);
-                statusSpan.style.display = 'inline';
-                setTimeout(() => {
-                    statusSpan.style.display = 'none';
-                }, 2000);
-            } catch (e) {
-                alert('Could not save dialogue practice. Please try again.');
-            }
-        }
-
-        // Show dialogue reference
-        function showDialogueReference(lessonNum) {
-            const refDiv = document.getElementById(`dialogue-reference-${lessonNum}`);
-            if (refDiv.style.display === 'none') {
-                refDiv.style.display = 'block';
-            } else {
-                refDiv.style.display = 'none';
-            }
-        }
-
-        // Load saved dialogue practice
-        async function loadDialoguePractice(lessonNum) {
-            try {
-                const result = await window.storage.get(`dialogue-practice-${lessonNum}`);
-                if (result && result.value) {
-                    const textarea = document.getElementById(`dialogue-practice-${lessonNum}`);
-                    if (textarea) {
-                        textarea.value = result.value;
-                    }
+                // Important Notes
+                if (section.notes) {
+                    const note = document.createElement('div');
+                    note.className = 'note-box';
+                    note.innerHTML = `<strong>Note:</strong> ${section.notes}`;
+                    box.appendChild(note);
                 }
-            } catch (e) {
-                // No saved practice
+                
+                card.appendChild(box);
             }
-        }
 
-        // Initialize app
-        async function init() {
-            await loadProgress();
-            initLessonGrid();
-            loadLessonContent(currentLesson);
-        }
+            // 4. EXERCISES & COMPREHENSION
+            else if (section.type === 'exercise' || section.type === 'comprehension') {
+                const box = document.createElement('div');
+                box.className = 'exercise-container';
 
-        // Start app when DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
+                // Context for Comprehension
+                if (section.context) box.innerHTML += `<p style="margin-top:0; font-weight:600; border-bottom:1px solid #eee; padding-bottom:8px;">Context: ${section.context}</p>`;
+                
+                // Dialogue display inside Exercise (e.g. Comprehension)
+                if (section.dialogue) {
+                    const dBox = document.createElement('div');
+                    dBox.style.background = "#f9f9f9"; 
+                    dBox.style.padding = "10px";
+                    dBox.style.marginBottom = "20px";
+                    dBox.style.borderRadius = "8px";
+                    section.dialogue.forEach(l => {
+                        dBox.innerHTML += `<div style="margin-bottom:8px; border-bottom:1px solid #e0e0e0; padding-bottom:4px;">
+                            <span style="color:var(--primary); font-weight:bold; font-size:11px;">${l.speaker}</span>
+                            <div style="font-size:16px; direction:rtl; font-family:Tahoma;">${l.farsi}</div>
+                            <div style="font-size:13px; color:#555;">${l.english}</div>
+                        </div>`;
+                    });
+                    box.appendChild(dBox);
+                }
+
+                if (section.instruction) box.innerHTML += `<div class="ex-instruction">${section.instruction}</div>`;
+
+                // --- MATCHING ---
+                if (section.exercise_type === 'matching' && section.pairs) {
+                    section.pairs.forEach((pair, pIdx) => {
+                        const row = document.createElement('div');
+                        row.className = 'matching-row';
+                        
+                        // Dropdown options
+                        const options = section.pairs.map(p => `<option value="${p.match}">${p.match}</option>`).join('');
+                        
+                        row.innerHTML = `
+                            <span class="q-prompt" style="font-size:14px; margin:0;">${pair.prompt}</span>
+                            <select id="${secId}-m-${pIdx}" class="match-select" onchange="checkMatch(this, '${pair.match}', '${secId}-fb-${pIdx}')">
+                                <option value="">Select...</option>
+                                ${options}
+                            </select>
+                            <span id="${secId}-fb-${pIdx}" style="width:24px; text-align:center;"></span>
+                        `;
+                        box.appendChild(row);
+                    });
+                } 
+                // --- QUESTIONS (Radio or Input) ---
+                else if (section.questions) {
+                    section.questions.forEach((q, qIdx) => {
+                        const qId = `${secId}-q-${qIdx}`;
+                        const qDiv = document.createElement('div');
+                        qDiv.className = 'question-item';
+
+                        // Check input mode
+                        const isFarsi = section.input_mode === 'farsi';
+
+                        // A. Multiple Choice
+                        if (q.options) {
+                            qDiv.innerHTML = `<span class="q-prompt">${qIdx+1}. ${q.prompt || q.question}</span>`;
+                            q.options.forEach((opt, oIdx) => {
+                                qDiv.innerHTML += `
+                                <div class="radio-label" onclick="selectRadio(this)">
+                                    <input type="radio" name="${qId}" value="${oIdx}"> ${opt}
+                                </div>`;
+                            });
+                            qDiv.innerHTML += `
+                                <button class="btn-check" style="margin-top:8px;" onclick="checkRadio('${qId}', ${q.correct_index}, '${qId}-fb')">Check</button>
+                                <div id="${qId}-fb" class="feedback"></div>`;
+                        } 
+                        // B. Text Input (Translation / Fill blank / Substitution)
+                        else {
+                            const inputClass = isFarsi ? 'farsi-input' : '';
+                            const placeH = isFarsi ? 'پاسخ...' : 'Type answer...';
+                            const promptClass = (isFarsi && /[\u0600-\u06FF]/.test(q.prompt)) ? 'q-prompt rtl' : 'q-prompt';
+
+                            qDiv.innerHTML = `
+                                <span class="${promptClass}">${qIdx+1}. ${q.prompt}</span>
+                                <div class="input-wrapper">
+                                    <input type="text" id="${qId}-in" class="${inputClass}" placeholder="${placeH}">
+                                    <button class="btn-check" onclick="checkText('${qId}-in', '${escapeStr(q.correct_answer)}', '${qId}-fb', ${isFarsi})">Check</button>
+                                </div>
+                                <div style="display:flex; align-items:center; margin-top:5px;">
+                                    <div id="${qId}-fb" class="feedback"></div>
+                                    <button class="btn-show" onclick="showAns('${qId}-fb', '${escapeStr(q.correct_answer)}', ${isFarsi})">Show Answer</button>
+                                </div>
+                            `;
+                        }
+                        box.appendChild(qDiv);
+                    });
+                }
+                
+                card.appendChild(box);
+            }
+
+            contentArea.appendChild(card);
+        });
+    }
+
+    // ==========================================
+    // CHECKING LOGIC
+    // ==========================================
+
+    function escapeStr(str) {
+        if (!str) return '';
+        return str.replace(/'/g, "\\'");
+    }
+
+    // Normalizes Farsi text to ignore minor differences (like ZWNJ, kashida, different Y/K chars)
+    function normalizeFarsi(str) {
+        if (!str) return '';
+        return str.trim()
+            .replace(/[ي]/g, 'ی')
+            .replace(/[ك]/g, 'ک')
+            .replace(/[ ]/g, '') // remove spaces for lenient checking
+            .replace(/\u200c/g, '') // remove ZWNJ
+            .replace(/[.,!?;:()]/g, ''); // remove punctuation
+    }
+
+    function cleanText(str) {
+        if (!str) return '';
+        return str.toLowerCase().replace(/[.,!?;:()]/g, '').replace(/\s+/g, '').trim();
+    }
+
+    window.checkText = function(inputId, correct, feedbackId, isFarsi) {
+        const val = document.getElementById(inputId).value;
+        const feedback = document.getElementById(feedbackId);
+        let match = false;
+        
+        if (isFarsi) {
+            match = normalizeFarsi(val) === normalizeFarsi(correct);
         } else {
-            init();
+            match = cleanText(val) === cleanText(correct);
         }
-    </script>
+
+        if (match) {
+            feedback.innerHTML = "Correct! ✅";
+            feedback.className = "feedback correct";
+        } else {
+            feedback.innerHTML = "Try again.";
+            feedback.className = "feedback wrong";
+        }
+    };
+
+    window.showAns = function(feedbackId, correct, isFarsi) {
+        const feedback = document.getElementById(feedbackId);
+        feedback.innerHTML = correct;
+        feedback.className = isFarsi ? "feedback info rtl" : "feedback info";
+    };
+
+    window.checkMatch = function(select, correct, feedbackId) {
+        const feedback = document.getElementById(feedbackId);
+        if (select.value === correct) {
+            feedback.innerHTML = "✅";
+            select.style.borderColor = "var(--success)";
+        } else {
+            feedback.innerHTML = "❌";
+            select.style.borderColor = "var(--error)";
+        }
+    };
+
+    window.selectRadio = function(div) {
+        // Deselect siblings
+        const parent = div.parentNode;
+        const siblings = parent.querySelectorAll('.radio-label');
+        siblings.forEach(el => el.classList.remove('selected'));
+        // Select clicked
+        div.classList.add('selected');
+        div.querySelector('input').checked = true;
+    };
+
+    window.checkRadio = function(name, correctIdx, feedbackId) {
+        const radios = document.getElementsByName(name);
+        const feedback = document.getElementById(feedbackId);
+        let selected = -1;
+        
+        for(let i=0; i<radios.length; i++) {
+            if(radios[i].checked) selected = parseInt(radios[i].value);
+        }
+
+        if (selected === -1) {
+            feedback.innerText = "Please select an answer.";
+            feedback.className = "feedback";
+        } else if (selected === correctIdx) {
+            feedback.innerText = "Correct! ✅";
+            feedback.className = "feedback correct";
+        } else {
+            feedback.innerText = "Incorrect.";
+            feedback.className = "feedback wrong";
+        }
+    };
+
+    // Initialize
+    init();
+</script>
 </body>
 </html>
